@@ -1,0 +1,27 @@
+kind = "web"
+previewPath = "/"
+title = "LearnWise AI"
+version = "1.0.0"
+id = "artifacts/learnwise-ai"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 24299
+
+[services.development]
+run = "pnpm --filter @workspace/learnwise-ai run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/learnwise-ai", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/learnwise-ai/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "24299"
+BASE_PATH = "/"

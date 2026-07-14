@@ -3,13 +3,28 @@ info:
   # Do not change the title, if the title changes, the import paths will be broken
   title: Api
   version: 0.1.0
-  description: API specification
+  description: LearnWise AI API specification
 servers:
   - url: /api
     description: Base API path
 tags:
   - name: health
     description: Health operations
+  - name: users
+    description: User profile operations
+  - name: activity
+    description: Recent activity and progress
+  - name: quizzes
+    description: Quiz generation and history
+  - name: flashcards
+    description: Flashcard sets management
+  - name: study-plans
+    description: Study plan management
+  - name: pdfs
+    description: PDF upload and management
+  - name: tutor
+    description: AI Tutor sessions
+
 paths:
   /healthz:
     get:
@@ -24,6 +39,416 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+
+  # ─── Users ──────────────────────────────────────────────────────────────────
+  /users/me:
+    get:
+      operationId: getMe
+      tags: [users]
+      summary: Get current user profile
+      responses:
+        "200":
+          description: Current user
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserProfile"
+        "401":
+          description: Unauthorized
+    patch:
+      operationId: updateMe
+      tags: [users]
+      summary: Update current user profile
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserProfileUpdate"
+      responses:
+        "200":
+          description: Updated profile
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserProfile"
+        "401":
+          description: Unauthorized
+
+  # ─── Activity & Progress ────────────────────────────────────────────────────
+  /activity:
+    get:
+      operationId: getActivity
+      tags: [activity]
+      summary: Get recent learning activity
+      responses:
+        "200":
+          description: List of recent activity items
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ActivityItem"
+
+  /progress:
+    get:
+      operationId: getProgress
+      tags: [activity]
+      summary: Get learning progress summary
+      responses:
+        "200":
+          description: Progress summary
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProgressSummary"
+
+  # ─── Quizzes ────────────────────────────────────────────────────────────────
+  /quizzes:
+    get:
+      operationId: getQuizzes
+      tags: [quizzes]
+      summary: List quiz history
+      responses:
+        "200":
+          description: List of quizzes
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Quiz"
+    post:
+      operationId: createQuiz
+      tags: [quizzes]
+      summary: Create a new quiz
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/QuizInput"
+      responses:
+        "201":
+          description: Created quiz
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Quiz"
+
+  /quizzes/{id}:
+    get:
+      operationId: getQuiz
+      tags: [quizzes]
+      summary: Get quiz by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Quiz detail
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Quiz"
+        "404":
+          description: Not found
+    delete:
+      operationId: deleteQuiz
+      tags: [quizzes]
+      summary: Delete a quiz
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+
+  # ─── Flashcards ─────────────────────────────────────────────────────────────
+  /flashcards:
+    get:
+      operationId: getFlashcardSets
+      tags: [flashcards]
+      summary: List flashcard sets
+      responses:
+        "200":
+          description: List of flashcard sets
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/FlashcardSet"
+    post:
+      operationId: createFlashcardSet
+      tags: [flashcards]
+      summary: Create a flashcard set
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/FlashcardSetInput"
+      responses:
+        "201":
+          description: Created flashcard set
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FlashcardSet"
+
+  /flashcards/{id}:
+    get:
+      operationId: getFlashcardSet
+      tags: [flashcards]
+      summary: Get a flashcard set by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Flashcard set
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/FlashcardSet"
+        "404":
+          description: Not found
+    delete:
+      operationId: deleteFlashcardSet
+      tags: [flashcards]
+      summary: Delete a flashcard set
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+
+  # ─── Study Plans ─────────────────────────────────────────────────────────────
+  /study-plans:
+    get:
+      operationId: getStudyPlans
+      tags: [study-plans]
+      summary: List study plans
+      responses:
+        "200":
+          description: List of study plans
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/StudyPlan"
+    post:
+      operationId: createStudyPlan
+      tags: [study-plans]
+      summary: Create a study plan
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/StudyPlanInput"
+      responses:
+        "201":
+          description: Created study plan
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StudyPlan"
+
+  /study-plans/{id}:
+    get:
+      operationId: getStudyPlan
+      tags: [study-plans]
+      summary: Get a study plan by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Study plan
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StudyPlan"
+        "404":
+          description: Not found
+    patch:
+      operationId: updateStudyPlan
+      tags: [study-plans]
+      summary: Update a study plan
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/StudyPlanUpdate"
+      responses:
+        "200":
+          description: Updated study plan
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StudyPlan"
+    delete:
+      operationId: deleteStudyPlan
+      tags: [study-plans]
+      summary: Delete a study plan
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+
+  # ─── PDFs ───────────────────────────────────────────────────────────────────
+  /pdfs:
+    get:
+      operationId: getPdfs
+      tags: [pdfs]
+      summary: List uploaded PDFs
+      responses:
+        "200":
+          description: List of PDFs
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/PdfDocument"
+    post:
+      operationId: createPdf
+      tags: [pdfs]
+      summary: Register a PDF upload
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PdfInput"
+      responses:
+        "201":
+          description: Registered PDF
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PdfDocument"
+
+  /pdfs/{id}:
+    get:
+      operationId: getPdf
+      tags: [pdfs]
+      summary: Get a PDF by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: PDF document
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PdfDocument"
+        "404":
+          description: Not found
+    delete:
+      operationId: deletePdf
+      tags: [pdfs]
+      summary: Delete a PDF record
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+
+  # ─── AI Tutor Sessions ───────────────────────────────────────────────────────
+  /tutor/sessions:
+    get:
+      operationId: getTutorSessions
+      tags: [tutor]
+      summary: List AI tutor sessions
+      responses:
+        "200":
+          description: List of tutor sessions
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/TutorSession"
+    post:
+      operationId: createTutorSession
+      tags: [tutor]
+      summary: Start a new AI tutor session
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TutorSessionInput"
+      responses:
+        "201":
+          description: Created tutor session
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TutorSession"
+
+  /tutor/sessions/{id}:
+    get:
+      operationId: getTutorSession
+      tags: [tutor]
+      summary: Get a tutor session by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Tutor session
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TutorSession"
+        "404":
+          description: Not found
+
 components:
   schemas:
     HealthStatus:
@@ -34,3 +459,274 @@ components:
       required:
         - status
 
+    # ─── User ────────────────────────────────────────────────────────────────
+    UserProfile:
+      type: object
+      required: [id, clerkId, displayName, email, createdAt]
+      properties:
+        id:
+          type: integer
+        clerkId:
+          type: string
+        displayName:
+          type: string
+        email:
+          type: string
+        avatarUrl:
+          type: ["string", "null"]
+        bio:
+          type: ["string", "null"]
+        studyGoal:
+          type: ["string", "null"]
+        weeklyGoalHours:
+          type: ["integer", "null"]
+        createdAt:
+          type: string
+          format: date-time
+
+    UserProfileUpdate:
+      type: object
+      properties:
+        displayName:
+          type: string
+        bio:
+          type: string
+        studyGoal:
+          type: string
+        weeklyGoalHours:
+          type: integer
+
+    # ─── Activity ────────────────────────────────────────────────────────────
+    ActivityItem:
+      type: object
+      required: [id, type, title, description, createdAt]
+      properties:
+        id:
+          type: integer
+        type:
+          type: string
+          enum: [quiz, flashcard, pdf, study_plan, tutor]
+        title:
+          type: string
+        description:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+
+    ProgressSummary:
+      type: object
+      required: [totalStudyMinutes, currentStreak, weeklyGoalHours, weeklyMinutesStudied, quizzesCompleted, flashcardsReviewed, pdfsUploaded, studyPlansActive]
+      properties:
+        totalStudyMinutes:
+          type: integer
+        currentStreak:
+          type: integer
+        weeklyGoalHours:
+          type: integer
+        weeklyMinutesStudied:
+          type: integer
+        quizzesCompleted:
+          type: integer
+        flashcardsReviewed:
+          type: integer
+        pdfsUploaded:
+          type: integer
+        studyPlansActive:
+          type: integer
+
+    # ─── Quiz ────────────────────────────────────────────────────────────────
+    Quiz:
+      type: object
+      required: [id, userId, title, topic, questionCount, score, status, createdAt]
+      properties:
+        id:
+          type: integer
+        userId:
+          type: integer
+        title:
+          type: string
+        topic:
+          type: string
+        questionCount:
+          type: integer
+        score:
+          type: ["integer", "null"]
+        status:
+          type: string
+          enum: [pending, completed, archived]
+        createdAt:
+          type: string
+          format: date-time
+
+    QuizInput:
+      type: object
+      required: [title, topic, questionCount]
+      properties:
+        title:
+          type: string
+        topic:
+          type: string
+        questionCount:
+          type: integer
+          minimum: 1
+          maximum: 50
+
+    # ─── Flashcards ──────────────────────────────────────────────────────────
+    FlashcardSet:
+      type: object
+      required: [id, userId, title, topic, cardCount, createdAt]
+      properties:
+        id:
+          type: integer
+        userId:
+          type: integer
+        title:
+          type: string
+        topic:
+          type: string
+        cardCount:
+          type: integer
+        lastStudiedAt:
+          type: ["string", "null"]
+          format: date-time
+        createdAt:
+          type: string
+          format: date-time
+
+    FlashcardSetInput:
+      type: object
+      required: [title, topic]
+      properties:
+        title:
+          type: string
+        topic:
+          type: string
+        cardCount:
+          type: integer
+          minimum: 1
+
+    # ─── Study Plans ─────────────────────────────────────────────────────────
+    StudyPlan:
+      type: object
+      required: [id, userId, title, subject, durationWeeks, hoursPerWeek, status, createdAt]
+      properties:
+        id:
+          type: integer
+        userId:
+          type: integer
+        title:
+          type: string
+        subject:
+          type: string
+        durationWeeks:
+          type: integer
+        hoursPerWeek:
+          type: integer
+        status:
+          type: string
+          enum: [active, completed, paused]
+        progressPercent:
+          type: integer
+        createdAt:
+          type: string
+          format: date-time
+
+    StudyPlanInput:
+      type: object
+      required: [title, subject, durationWeeks, hoursPerWeek]
+      properties:
+        title:
+          type: string
+        subject:
+          type: string
+        durationWeeks:
+          type: integer
+          minimum: 1
+        hoursPerWeek:
+          type: integer
+          minimum: 1
+
+    StudyPlanUpdate:
+      type: object
+      properties:
+        title:
+          type: string
+        subject:
+          type: string
+        durationWeeks:
+          type: integer
+        hoursPerWeek:
+          type: integer
+        status:
+          type: string
+          enum: [active, completed, paused]
+        progressPercent:
+          type: integer
+
+    # ─── PDFs ────────────────────────────────────────────────────────────────
+    PdfDocument:
+      type: object
+      required: [id, userId, fileName, originalName, fileSize, status, createdAt]
+      properties:
+        id:
+          type: integer
+        userId:
+          type: integer
+        fileName:
+          type: string
+        originalName:
+          type: string
+        fileSize:
+          type: integer
+        pageCount:
+          type: ["integer", "null"]
+        status:
+          type: string
+          enum: [processing, ready, error]
+        createdAt:
+          type: string
+          format: date-time
+
+    PdfInput:
+      type: object
+      required: [fileName, originalName, fileSize]
+      properties:
+        fileName:
+          type: string
+        originalName:
+          type: string
+        fileSize:
+          type: integer
+        pageCount:
+          type: integer
+
+    # ─── Tutor Sessions ──────────────────────────────────────────────────────
+    TutorSession:
+      type: object
+      required: [id, userId, subject, messageCount, status, createdAt]
+      properties:
+        id:
+          type: integer
+        userId:
+          type: integer
+        subject:
+          type: string
+        messageCount:
+          type: integer
+        status:
+          type: string
+          enum: [active, ended]
+        lastMessageAt:
+          type: ["string", "null"]
+          format: date-time
+        createdAt:
+          type: string
+          format: date-time
+
+    TutorSessionInput:
+      type: object
+      required: [subject]
+      properties:
+        subject:
+          type: string

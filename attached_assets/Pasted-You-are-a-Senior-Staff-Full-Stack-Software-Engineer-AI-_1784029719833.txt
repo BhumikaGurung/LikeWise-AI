@@ -1,0 +1,349 @@
+You are a Senior Staff Full Stack Software Engineer, AI Engineer, UI/UX Designer, Cloud Architect, and DevOps Engineer.
+
+Build the COMPLETE FOUNDATION for a production-ready AI SaaS web application called LearnWise AI.
+
+IMPORTANT
+
+Generate production-quality code.
+
+Create a real full-stack project.
+
+Frontend and backend must be separate.
+
+Use clean architecture.
+
+Use reusable components.
+
+Write beginner-friendly code.
+
+Follow best practices.
+
+====================================================
+
+PROJECT NAME
+
+LearnWise AI
+
+Tagline
+
+Learn Smarter.
+Practice Better.
+Achieve More.
+
+====================================================
+
+PROJECT DESCRIPTION
+
+LearnWise AI is an AI-powered learning platform where students can
+
+• Learn with AI Tutor
+
+• Generate quizzes
+
+• Upload PDF notes
+
+• Generate flashcards
+
+• Create AI study plans
+
+• Track learning progress
+
+This phase only builds the COMPLETE FOUNDATION.
+
+Do NOT implement AI functionality yet.
+
+====================================================
+
+TECH STACK
+
+Frontend
+
+React 18
+
+Vite
+
+JavaScript
+
+Tailwind CSS
+
+React Router DOM
+
+Axios
+
+Framer Motion
+
+Lucide React
+
+React Hook Form
+
+Backend
+
+Node.js
+
+Express.js
+
+dotenv
+
+cors
+
+helmet
+
+morgan
+
+express-validator
+
+Database
+
+Supabase PostgreSQL
+
+Authentication
+
+Supabase Auth (prepare integration)
+
+Deployment Preparation
+
+Docker
+
+AWS App Runner
+
+====================================================
+
+FOLDER STRUCTURE
+
+learnwise-ai/
+
+frontend/
+
+src/
+
+components/
+
+layouts/
+
+pages/
+
+hooks/
+
+services/
+
+assets/
+
+utils/
+
+backend/
+
+routes/
+
+controllers/
+
+middleware/
+
+services/
+
+config/
+
+models/
+
+utils/
+
+Dockerfile
+
+docker-compose.yml
+
+README.md
+
+.env.example
+
+====================================================
+
+CREATE
+
+Landing Page
+
+Login Page
+
+Signup Page
+
+Forgot Password
+
+Dashboard
+
+AI Tutor Page (UI placeholder)
+
+Quiz Generator Page (UI placeholder)
+
+PDF Learning Page (UI placeholder)
+
+Flashcards Page (UI placeholder)
+
+Study Planner Page (UI placeholder)
+
+Progress Dashboard Page (UI placeholder)
+
+Settings
+
+Profile
+
+404 Page
+
+====================================================
+
+LANDING PAGE
+
+Modern AI SaaS UI
+
+Sticky Navbar
+
+Hero Section
+
+Animated Gradient
+
+Statistics
+
+Feature Cards
+
+Pricing
+
+FAQ
+
+Testimonials
+
+Footer
+
+Beautiful illustrations placeholders
+
+====================================================
+
+DASHBOARD
+
+Sidebar
+
+Top Navbar
+
+Recent Activity
+
+Continue Learning
+
+Study Streak
+
+Weekly Progress
+
+Quick Actions
+
+Responsive Cards
+
+====================================================
+
+BACKEND
+
+Create Express server.
+
+Create
+
+Health API
+
+Authentication Routes
+
+User Routes
+
+Configuration
+
+Logging
+
+Validation
+
+Error Handler
+
+Prepare placeholders for
+
+AI Tutor
+
+Quiz Generator
+
+PDF Learning
+
+Flashcards
+
+Study Planner
+
+====================================================
+
+DATABASE
+
+Prepare Supabase configuration.
+
+Create schema documentation for
+
+Users
+
+Quiz History
+
+Flashcards
+
+Study Plans
+
+Uploaded PDFs
+
+Learning Progress
+
+====================================================
+
+DESIGN
+
+Modern SaaS
+
+Blue and Purple Gradient
+
+Glassmorphism
+
+Rounded Corners
+
+Tailwind CSS
+
+Responsive
+
+Dark Mode Ready
+
+Loading Skeletons
+
+Hover Animations
+
+====================================================
+
+DO NOT IMPLEMENT
+
+OpenAI
+
+Quiz Logic
+
+Streaming
+
+PDF Processing
+
+Study Planner Logic
+
+Flashcards Logic
+
+Only create placeholders and architecture.
+
+====================================================
+
+OUTPUT
+
+Generate complete frontend.
+
+Generate complete backend.
+
+Generate Docker preparation.
+
+Generate README.
+
+Generate .env.example.
+
+Explain project structure.
+
+Explain backend architecture.
+
+Explain frontend architecture.
+
+Explain next development phase.
