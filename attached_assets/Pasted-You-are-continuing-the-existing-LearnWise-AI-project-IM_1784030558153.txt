@@ -1,0 +1,327 @@
+You are continuing the existing LearnWise AI project.
+
+IMPORTANT
+
+Do NOT recreate the project.
+
+Do NOT modify the existing UI unless necessary.
+
+Extend the current project.
+
+Maintain the existing folder structure.
+
+Maintain responsive design.
+
+Maintain clean architecture.
+
+========================================================
+
+GOAL
+
+Transform LearnWise AI into a functional AI Learning Platform.
+
+Implement AI Tutor, Quiz Generator and OpenAI integration.
+
+========================================================
+
+AI MODEL
+
+Use OpenAI GPT-4.1 mini.
+
+Make the AI model configurable using environment variables.
+
+Store
+
+OPENAI_API_KEY
+
+inside backend .env.
+
+Never expose API keys in frontend.
+
+========================================================
+
+BACKEND
+
+Implement Express APIs.
+
+Create
+
+/api/chat
+
+/api/quiz
+
+/api/history
+
+/api/user
+
+Create services
+
+openaiService.js
+
+quizService.js
+
+historyService.js
+
+Implement proper error handling.
+
+Return JSON responses.
+
+Use async/await.
+
+Validate input.
+
+========================================================
+
+AI TUTOR
+
+Create a professional AI Tutor page.
+
+Features
+
+Modern Chat Interface
+
+Chat bubbles
+
+User avatar
+
+AI avatar
+
+Auto scroll
+
+Typing indicator
+
+Markdown support
+
+Code block formatting
+
+Copy response button
+
+Regenerate response button
+
+Clear conversation button
+
+Chat history sidebar
+
+New Chat button
+
+Suggested prompts
+
+Example prompts
+
+Explain Binary Trees
+
+Explain Operating System
+
+Explain DBMS
+
+Explain Java OOP
+
+Explain Python Functions
+
+Explain Computer Networks
+
+========================================================
+
+STREAMING
+
+Implement streaming AI responses.
+
+Display text progressively.
+
+Show typing animation while AI is generating.
+
+========================================================
+
+QUIZ GENERATOR
+
+Create a professional quiz generator.
+
+User selects
+
+Subject
+
+Topic
+
+Difficulty
+
+Easy
+
+Medium
+
+Hard
+
+Question Count
+
+5
+
+10
+
+15
+
+20
+
+Question Type
+
+MCQ
+
+True False
+
+Fill in blanks
+
+Short Answer
+
+Generate Quiz button.
+
+========================================================
+
+QUIZ DISPLAY
+
+Beautiful cards.
+
+Question number.
+
+Timer.
+
+Previous button.
+
+Next button.
+
+Submit Quiz.
+
+Show
+
+Score
+
+Percentage
+
+Correct answers
+
+Wrong answers
+
+Explanation
+
+Retry Quiz
+
+Save Result
+
+========================================================
+
+DATABASE
+
+Store
+
+Quiz History
+
+AI Chat History
+
+User Progress
+
+Date
+
+Time
+
+Topic
+
+Difficulty
+
+Score
+
+========================================================
+
+PROMPT ENGINEERING
+
+Create prompt templates.
+
+Tutor Prompt
+
+Quiz Prompt
+
+Explanation Prompt
+
+Learning Prompt
+
+Store prompts inside backend/prompts.
+
+========================================================
+
+USER EXPERIENCE
+
+Loading spinner
+
+Skeleton loading
+
+Toast notifications
+
+Error messages
+
+Success messages
+
+Empty states
+
+Responsive design
+
+========================================================
+
+SECURITY
+
+Validate requests.
+
+Sanitize input.
+
+Protect API routes.
+
+Use environment variables.
+
+Never expose API keys.
+
+========================================================
+
+DESIGN
+
+Continue existing design.
+
+Blue gradient.
+
+Purple accents.
+
+Glassmorphism.
+
+Rounded cards.
+
+Framer Motion animations.
+
+Professional typography.
+
+========================================================
+
+OUTPUT
+
+Generate
+
+Complete backend APIs.
+
+Complete AI Tutor.
+
+Complete Quiz Generator.
+
+OpenAI integration.
+
+Streaming responses.
+
+Prompt templates.
+
+Database integration.
+
+Explain
+
+API routes.
+
+Services.
+
+Folder changes.
+
+Environment variables.
+
+How AI Tutor works.
+
+How Quiz Generator works.
