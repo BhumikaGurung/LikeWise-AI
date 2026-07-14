@@ -8,6 +8,9 @@
 
 export * from './activityItem';
 export * from './activityItemType';
+export * from './chatMessage';
+export * from './chatMessageInput';
+export * from './chatMessageRole';
 export * from './flashcardSet';
 export * from './flashcardSetInput';
 export * from './healthStatus';
@@ -16,8 +19,17 @@ export * from './pdfDocumentStatus';
 export * from './pdfInput';
 export * from './progressSummary';
 export * from './quiz';
+export * from './quizDifficulty';
 export * from './quizInput';
+export * from './quizInputDifficulty';
+export * from './quizInputQuestionType';
+export * from './quizQuestion';
+export * from './quizQuestionType';
+export * from './quizResult';
+export * from './quizResultQuestion';
 export * from './quizStatus';
+export * from './quizSubmitInput';
+export * from './quizSubmitInputAnswersItem';
 export * from './studyPlan';
 export * from './studyPlanInput';
 export * from './studyPlanStatus';

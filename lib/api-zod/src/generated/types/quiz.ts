@@ -5,16 +5,29 @@
  * LearnWise AI API specification
  * OpenAPI spec version: 0.1.0
  */
+import type { QuizDifficulty } from './quizDifficulty';
+import type { QuizQuestion } from './quizQuestion';
+import type { QuizQuestionType } from './quizQuestionType';
 import type { QuizStatus } from './quizStatus';
 
 export interface Quiz {
   id: number;
   userId: number;
   title: string;
+  subject: string;
   topic: string;
+  difficulty: QuizDifficulty;
+  questionType: QuizQuestionType;
   questionCount: number;
+  questions?: QuizQuestion[];
   /** @nullable */
   score: number | null;
+  /** @nullable */
+  totalCorrect?: number | null;
+  /** @nullable */
+  totalWrong?: number | null;
+  /** @nullable */
+  timeTakenSeconds?: number | null;
   status: QuizStatus;
   createdAt: Date;
 }

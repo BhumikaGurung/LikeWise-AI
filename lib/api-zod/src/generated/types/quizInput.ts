@@ -5,13 +5,18 @@
  * LearnWise AI API specification
  * OpenAPI spec version: 0.1.0
  */
+import type { QuizInputDifficulty } from './quizInputDifficulty';
+import type { QuizInputQuestionType } from './quizInputQuestionType';
 
 export interface QuizInput {
   title: string;
+  subject?: string;
   topic: string;
+  difficulty?: QuizInputDifficulty;
+  questionType?: QuizInputQuestionType;
   /**
      * @minimum 1
-     * @maximum 50
+     * @maximum 20
      */
   questionCount: number;
 }

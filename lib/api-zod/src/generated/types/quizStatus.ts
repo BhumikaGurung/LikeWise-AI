@@ -10,7 +10,9 @@ export type QuizStatus = typeof QuizStatus[keyof typeof QuizStatus];
 
 
 export const QuizStatus = {
-  pending: 'pending',
+  generating: 'generating',
+  ready: 'ready',
+  in_progress: 'in_progress',
   completed: 'completed',
   archived: 'archived',
 } as const;

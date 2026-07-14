@@ -21,6 +21,8 @@ import type {
 
 import type {
   ActivityItem,
+  ChatMessage,
+  ChatMessageInput,
   FlashcardSet,
   FlashcardSetInput,
   HealthStatus,
@@ -29,6 +31,8 @@ import type {
   ProgressSummary,
   Quiz,
   QuizInput,
+  QuizResult,
+  QuizSubmitInput,
   StudyPlan,
   StudyPlanInput,
   StudyPlanUpdate,
@@ -531,7 +535,7 @@ export const getCreateQuizUrl = () => {
 }
 
 /**
- * @summary Create a new quiz
+ * @summary Create and generate a new AI quiz
  */
 export const createQuiz = async (quizInput: QuizInput, options?: RequestInit): Promise<Quiz> => {
 
@@ -580,7 +584,7 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
     export type CreateQuizMutationError = ErrorType<unknown>
 
     /**
- * @summary Create a new quiz
+ * @summary Create and generate a new AI quiz
  */
 export const useCreateQuiz = <TError = ErrorType<unknown>,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createQuiz>>, TError,{data: BodyType<QuizInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
@@ -602,7 +606,7 @@ export const getGetQuizUrl = (id: number,) => {
 }
 
 /**
- * @summary Get quiz by ID
+ * @summary Get quiz by ID (includes questions)
  */
 export const getQuiz = async (id: number, options?: RequestInit): Promise<Quiz> => {
 
@@ -649,7 +653,7 @@ export type GetQuizQueryError = ErrorType<void>
 
 
 /**
- * @summary Get quiz by ID
+ * @summary Get quiz by ID (includes questions)
  */
 
 export function useGetQuiz<TData = Awaited<ReturnType<typeof getQuiz>>, TError = ErrorType<void>>(
@@ -739,6 +743,78 @@ export const useDeleteQuiz = <TError = ErrorType<unknown>,
         TContext
       > => {
       return useMutation(getDeleteQuizMutationOptions(options));
+    }
+
+export const getSubmitQuizUrl = (id: number,) => {
+
+
+
+
+  return `/api/quizzes/${id}/submit`
+}
+
+/**
+ * @summary Submit quiz answers and get scored results
+ */
+export const submitQuiz = async (id: number,
+    quizSubmitInput: QuizSubmitInput, options?: RequestInit): Promise<QuizResult> => {
+
+  return customFetch<QuizResult>(getSubmitQuizUrl(id),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(quizSubmitInput)
+  }
+);}
+
+
+
+
+
+export const getSubmitQuizMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof submitQuiz>>, TError,{id: number;data: BodyType<QuizSubmitInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof submitQuiz>>, TError,{id: number;data: BodyType<QuizSubmitInput>}, TContext> => {
+
+const mutationKey = ['submitQuiz'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof submitQuiz>>, {id: number;data: BodyType<QuizSubmitInput>}> = (props) => {
+          const {id,data} = props ?? {};
+
+          return  submitQuiz(id,data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type SubmitQuizMutationResult = NonNullable<Awaited<ReturnType<typeof submitQuiz>>>
+    export type SubmitQuizMutationBody = BodyType<QuizSubmitInput>
+    export type SubmitQuizMutationError = ErrorType<unknown>
+
+    /**
+ * @summary Submit quiz answers and get scored results
+ */
+export const useSubmitQuiz = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof submitQuiz>>, TError,{id: number;data: BodyType<QuizSubmitInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof submitQuiz>>,
+        TError,
+        {id: number;data: BodyType<QuizSubmitInput>},
+        TContext
+      > => {
+      return useMutation(getSubmitQuizMutationOptions(options));
     }
 
 export const getGetFlashcardSetsUrl = () => {
@@ -1925,4 +2001,226 @@ export function useGetTutorSession<TData = Awaited<ReturnType<typeof getTutorSes
 
 
 
+
+export const getDeleteTutorSessionUrl = (id: number,) => {
+
+
+
+
+  return `/api/tutor/sessions/${id}`
+}
+
+/**
+ * @summary Delete a tutor session and its messages
+ */
+export const deleteTutorSession = async (id: number, options?: RequestInit): Promise<void> => {
+
+  return customFetch<void>(getDeleteTutorSessionUrl(id),
+  {
+    ...options,
+    method: 'DELETE'
+
+
+  }
+);}
+
+
+
+
+
+export const getDeleteTutorSessionMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteTutorSession>>, TError,{id: number}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof deleteTutorSession>>, TError,{id: number}, TContext> => {
+
+const mutationKey = ['deleteTutorSession'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteTutorSession>>, {id: number}> = (props) => {
+          const {id} = props ?? {};
+
+          return  deleteTutorSession(id,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type DeleteTutorSessionMutationResult = NonNullable<Awaited<ReturnType<typeof deleteTutorSession>>>
+
+    export type DeleteTutorSessionMutationError = ErrorType<unknown>
+
+    /**
+ * @summary Delete a tutor session and its messages
+ */
+export const useDeleteTutorSession = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteTutorSession>>, TError,{id: number}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof deleteTutorSession>>,
+        TError,
+        {id: number},
+        TContext
+      > => {
+      return useMutation(getDeleteTutorSessionMutationOptions(options));
+    }
+
+export const getGetTutorMessagesUrl = (id: number,) => {
+
+
+
+
+  return `/api/tutor/sessions/${id}/messages`
+}
+
+/**
+ * @summary Get all messages in a tutor session
+ */
+export const getTutorMessages = async (id: number, options?: RequestInit): Promise<ChatMessage[]> => {
+
+  return customFetch<ChatMessage[]>(getGetTutorMessagesUrl(id),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetTutorMessagesQueryKey = (id: number,) => {
+    return [
+    `/api/tutor/sessions/${id}/messages`
+    ] as const;
+    }
+
+
+export const getGetTutorMessagesQueryOptions = <TData = Awaited<ReturnType<typeof getTutorMessages>>, TError = ErrorType<unknown>>(id: number, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getTutorMessages>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetTutorMessagesQueryKey(id);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getTutorMessages>>> = ({ signal }) => getTutorMessages(id, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: id !== null && id !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getTutorMessages>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetTutorMessagesQueryResult = NonNullable<Awaited<ReturnType<typeof getTutorMessages>>>
+export type GetTutorMessagesQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Get all messages in a tutor session
+ */
+
+export function useGetTutorMessages<TData = Awaited<ReturnType<typeof getTutorMessages>>, TError = ErrorType<unknown>>(
+ id: number, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getTutorMessages>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetTutorMessagesQueryOptions(id,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+
+export const getSendTutorMessageUrl = (id: number,) => {
+
+
+
+
+  return `/api/tutor/sessions/${id}/messages`
+}
+
+/**
+ * Returns an SSE stream. Each event is `data: {"content": "..."}`.
+ * Ends with `data: {"done": true}`. Consume with fetch + ReadableStream.
+ * @summary Send a message and receive a streaming AI response
+ */
+export const sendTutorMessage = async (id: number,
+    chatMessageInput: ChatMessageInput, options?: RequestInit): Promise<unknown> => {
+
+  return customFetch<unknown>(getSendTutorMessageUrl(id),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(chatMessageInput)
+  }
+);}
+
+
+
+
+
+export const getSendTutorMessageMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof sendTutorMessage>>, TError,{id: number;data: BodyType<ChatMessageInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof sendTutorMessage>>, TError,{id: number;data: BodyType<ChatMessageInput>}, TContext> => {
+
+const mutationKey = ['sendTutorMessage'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof sendTutorMessage>>, {id: number;data: BodyType<ChatMessageInput>}> = (props) => {
+          const {id,data} = props ?? {};
+
+          return  sendTutorMessage(id,data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type SendTutorMessageMutationResult = NonNullable<Awaited<ReturnType<typeof sendTutorMessage>>>
+    export type SendTutorMessageMutationBody = BodyType<ChatMessageInput>
+    export type SendTutorMessageMutationError = ErrorType<unknown>
+
+    /**
+ * @summary Send a message and receive a streaming AI response
+ */
+export const useSendTutorMessage = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof sendTutorMessage>>, TError,{id: number;data: BodyType<ChatMessageInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof sendTutorMessage>>,
+        TError,
+        {id: number;data: BodyType<ChatMessageInput>},
+        TContext
+      > => {
+      return useMutation(getSendTutorMessageMutationOptions(options));
+    }
 

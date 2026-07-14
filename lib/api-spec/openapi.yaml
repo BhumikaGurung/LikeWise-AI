@@ -23,7 +23,7 @@ tags:
   - name: pdfs
     description: PDF upload and management
   - name: tutor
-    description: AI Tutor sessions
+    description: AI Tutor sessions and chat
 
 paths:
   /healthz:
@@ -122,7 +122,7 @@ paths:
     post:
       operationId: createQuiz
       tags: [quizzes]
-      summary: Create a new quiz
+      summary: Create and generate a new AI quiz
       requestBody:
         required: true
         content:
@@ -131,7 +131,7 @@ paths:
               $ref: "#/components/schemas/QuizInput"
       responses:
         "201":
-          description: Created quiz
+          description: Created quiz with generated questions
           content:
             application/json:
               schema:
@@ -141,7 +141,7 @@ paths:
     get:
       operationId: getQuiz
       tags: [quizzes]
-      summary: Get quiz by ID
+      summary: Get quiz by ID (includes questions)
       parameters:
         - name: id
           in: path
@@ -150,7 +150,7 @@ paths:
             type: integer
       responses:
         "200":
-          description: Quiz detail
+          description: Quiz detail with questions
           content:
             application/json:
               schema:
@@ -170,6 +170,31 @@ paths:
       responses:
         "204":
           description: Deleted
+
+  /quizzes/{id}/submit:
+    post:
+      operationId: submitQuiz
+      tags: [quizzes]
+      summary: Submit quiz answers and get scored results
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/QuizSubmitInput"
+      responses:
+        "200":
+          description: Quiz result with score and explanations
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/QuizResult"
 
   # ─── Flashcards ─────────────────────────────────────────────────────────────
   /flashcards:
@@ -448,6 +473,64 @@ paths:
                 $ref: "#/components/schemas/TutorSession"
         "404":
           description: Not found
+    delete:
+      operationId: deleteTutorSession
+      tags: [tutor]
+      summary: Delete a tutor session and its messages
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+
+  /tutor/sessions/{id}/messages:
+    get:
+      operationId: getTutorMessages
+      tags: [tutor]
+      summary: Get all messages in a tutor session
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: List of chat messages
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ChatMessage"
+    post:
+      operationId: sendTutorMessage
+      tags: [tutor]
+      summary: Send a message and receive a streaming AI response
+      description: |
+        Returns an SSE stream. Each event is `data: {"content": "..."}`.
+        Ends with `data: {"done": true}`. Consume with fetch + ReadableStream.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ChatMessageInput"
+      responses:
+        "200":
+          description: SSE stream of AI text chunks
+          content:
+            text/event-stream: {}
 
 components:
   schemas:
@@ -536,9 +619,29 @@ components:
           type: integer
 
     # ─── Quiz ────────────────────────────────────────────────────────────────
+    QuizQuestion:
+      type: object
+      required: [id, question, type, correctAnswer, explanation]
+      properties:
+        id:
+          type: integer
+        question:
+          type: string
+        type:
+          type: string
+          enum: [mcq, true_false, fill_blank, short_answer]
+        options:
+          type: array
+          items:
+            type: string
+        correctAnswer:
+          type: string
+        explanation:
+          type: string
+
     Quiz:
       type: object
-      required: [id, userId, title, topic, questionCount, score, status, createdAt]
+      required: [id, userId, title, subject, topic, difficulty, questionType, questionCount, score, status, createdAt]
       properties:
         id:
           type: integer
@@ -546,15 +649,33 @@ components:
           type: integer
         title:
           type: string
+        subject:
+          type: string
         topic:
           type: string
+        difficulty:
+          type: string
+          enum: [easy, medium, hard]
+        questionType:
+          type: string
+          enum: [mcq, true_false, fill_blank, short_answer]
         questionCount:
           type: integer
+        questions:
+          type: array
+          items:
+            $ref: "#/components/schemas/QuizQuestion"
         score:
+          type: ["integer", "null"]
+        totalCorrect:
+          type: ["integer", "null"]
+        totalWrong:
+          type: ["integer", "null"]
+        timeTakenSeconds:
           type: ["integer", "null"]
         status:
           type: string
-          enum: [pending, completed, archived]
+          enum: [generating, ready, in_progress, completed, archived]
         createdAt:
           type: string
           format: date-time
@@ -565,12 +686,79 @@ components:
       properties:
         title:
           type: string
+        subject:
+          type: string
         topic:
           type: string
+        difficulty:
+          type: string
+          enum: [easy, medium, hard]
+        questionType:
+          type: string
+          enum: [mcq, true_false, fill_blank, short_answer]
         questionCount:
           type: integer
           minimum: 1
-          maximum: 50
+          maximum: 20
+
+    QuizSubmitInput:
+      type: object
+      required: [answers, timeTakenSeconds]
+      properties:
+        answers:
+          type: array
+          items:
+            type: object
+            required: [questionId, answer]
+            properties:
+              questionId:
+                type: integer
+              answer:
+                type: string
+        timeTakenSeconds:
+          type: integer
+
+    QuizResultQuestion:
+      type: object
+      required: [questionId, question, yourAnswer, correctAnswer, isCorrect, explanation]
+      properties:
+        questionId:
+          type: integer
+        question:
+          type: string
+        yourAnswer:
+          type: string
+        correctAnswer:
+          type: string
+        isCorrect:
+          type: boolean
+        explanation:
+          type: string
+        options:
+          type: array
+          items:
+            type: string
+
+    QuizResult:
+      type: object
+      required: [quizId, score, percentage, totalCorrect, totalWrong, timeTakenSeconds, results]
+      properties:
+        quizId:
+          type: integer
+        score:
+          type: integer
+        percentage:
+          type: integer
+        totalCorrect:
+          type: integer
+        totalWrong:
+          type: integer
+        timeTakenSeconds:
+          type: integer
+        results:
+          type: array
+          items:
+            $ref: "#/components/schemas/QuizResultQuestion"
 
     # ─── Flashcards ──────────────────────────────────────────────────────────
     FlashcardSet:
@@ -729,4 +917,28 @@ components:
       required: [subject]
       properties:
         subject:
+          type: string
+
+    ChatMessage:
+      type: object
+      required: [id, sessionId, role, content, createdAt]
+      properties:
+        id:
+          type: integer
+        sessionId:
+          type: integer
+        role:
+          type: string
+          enum: [user, assistant]
+        content:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+
+    ChatMessageInput:
+      type: object
+      required: [content]
+      properties:
+        content:
           type: string

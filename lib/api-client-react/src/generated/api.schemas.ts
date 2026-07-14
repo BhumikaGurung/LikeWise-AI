@@ -62,11 +62,41 @@ export interface ProgressSummary {
   studyPlansActive: number;
 }
 
+export type QuizQuestionType = typeof QuizQuestionType[keyof typeof QuizQuestionType];
+
+
+export const QuizQuestionType = {
+  mcq: 'mcq',
+  true_false: 'true_false',
+  fill_blank: 'fill_blank',
+  short_answer: 'short_answer',
+} as const;
+
+export interface QuizQuestion {
+  id: number;
+  question: string;
+  type: QuizQuestionType;
+  options?: string[];
+  correctAnswer: string;
+  explanation: string;
+}
+
+export type QuizDifficulty = typeof QuizDifficulty[keyof typeof QuizDifficulty];
+
+
+export const QuizDifficulty = {
+  easy: 'easy',
+  medium: 'medium',
+  hard: 'hard',
+} as const;
+
 export type QuizStatus = typeof QuizStatus[keyof typeof QuizStatus];
 
 
 export const QuizStatus = {
-  pending: 'pending',
+  generating: 'generating',
+  ready: 'ready',
+  in_progress: 'in_progress',
   completed: 'completed',
   archived: 'archived',
 } as const;
@@ -75,22 +105,84 @@ export interface Quiz {
   id: number;
   userId: number;
   title: string;
+  subject: string;
   topic: string;
+  difficulty: QuizDifficulty;
+  questionType: QuizQuestionType;
   questionCount: number;
+  questions?: QuizQuestion[];
   /** @nullable */
   score: number | null;
+  /** @nullable */
+  totalCorrect?: number | null;
+  /** @nullable */
+  totalWrong?: number | null;
+  /** @nullable */
+  timeTakenSeconds?: number | null;
   status: QuizStatus;
   createdAt: string;
 }
 
+export type QuizInputDifficulty = typeof QuizInputDifficulty[keyof typeof QuizInputDifficulty];
+
+
+export const QuizInputDifficulty = {
+  easy: 'easy',
+  medium: 'medium',
+  hard: 'hard',
+} as const;
+
+export type QuizInputQuestionType = typeof QuizInputQuestionType[keyof typeof QuizInputQuestionType];
+
+
+export const QuizInputQuestionType = {
+  mcq: 'mcq',
+  true_false: 'true_false',
+  fill_blank: 'fill_blank',
+  short_answer: 'short_answer',
+} as const;
+
 export interface QuizInput {
   title: string;
+  subject?: string;
   topic: string;
+  difficulty?: QuizInputDifficulty;
+  questionType?: QuizInputQuestionType;
   /**
      * @minimum 1
-     * @maximum 50
+     * @maximum 20
      */
   questionCount: number;
+}
+
+export type QuizSubmitInputAnswersItem = {
+  questionId: number;
+  answer: string;
+};
+
+export interface QuizSubmitInput {
+  answers: QuizSubmitInputAnswersItem[];
+  timeTakenSeconds: number;
+}
+
+export interface QuizResultQuestion {
+  questionId: number;
+  question: string;
+  yourAnswer: string;
+  correctAnswer: string;
+  isCorrect: boolean;
+  explanation: string;
+  options?: string[];
+}
+
+export interface QuizResult {
+  quizId: number;
+  score: number;
+  percentage: number;
+  totalCorrect: number;
+  totalWrong: number;
+  timeTakenSeconds: number;
+  results: QuizResultQuestion[];
 }
 
 export interface FlashcardSet {
@@ -208,5 +300,25 @@ export interface TutorSession {
 
 export interface TutorSessionInput {
   subject: string;
+}
+
+export type ChatMessageRole = typeof ChatMessageRole[keyof typeof ChatMessageRole];
+
+
+export const ChatMessageRole = {
+  user: 'user',
+  assistant: 'assistant',
+} as const;
+
+export interface ChatMessage {
+  id: number;
+  sessionId: number;
+  role: ChatMessageRole;
+  content: string;
+  createdAt: string;
+}
+
+export interface ChatMessageInput {
+  content: string;
 }
 

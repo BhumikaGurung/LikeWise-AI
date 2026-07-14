@@ -91,25 +91,42 @@ export const GetQuizzesResponseItem = zod.object({
   "id": zod.number(),
   "userId": zod.number(),
   "title": zod.string(),
+  "subject": zod.string(),
   "topic": zod.string(),
+  "difficulty": zod.enum(['easy', 'medium', 'hard']),
+  "questionType": zod.enum(['mcq', 'true_false', 'fill_blank', 'short_answer']),
   "questionCount": zod.number(),
+  "questions": zod.array(zod.object({
+  "id": zod.number(),
+  "question": zod.string(),
+  "type": zod.enum(['mcq', 'true_false', 'fill_blank', 'short_answer']),
+  "options": zod.array(zod.string()).optional(),
+  "correctAnswer": zod.string(),
+  "explanation": zod.string()
+})).optional(),
   "score": zod.number().nullable(),
-  "status": zod.enum(['pending', 'completed', 'archived']),
+  "totalCorrect": zod.number().nullish(),
+  "totalWrong": zod.number().nullish(),
+  "timeTakenSeconds": zod.number().nullish(),
+  "status": zod.enum(['generating', 'ready', 'in_progress', 'completed', 'archived']),
   "createdAt": zod.coerce.date()
 })
 export const GetQuizzesResponse = zod.array(GetQuizzesResponseItem)
 
 
 /**
- * @summary Create a new quiz
+ * @summary Create and generate a new AI quiz
  */
-export const createQuizBodyQuestionCountMax = 50;
+export const createQuizBodyQuestionCountMax = 20;
 
 
 
 export const CreateQuizBody = zod.object({
   "title": zod.string(),
+  "subject": zod.string().optional(),
   "topic": zod.string(),
+  "difficulty": zod.enum(['easy', 'medium', 'hard']).optional(),
+  "questionType": zod.enum(['mcq', 'true_false', 'fill_blank', 'short_answer']).optional(),
   "questionCount": zod.number().min(1).max(createQuizBodyQuestionCountMax)
 })
 
@@ -117,16 +134,30 @@ export const CreateQuizResponse = zod.object({
   "id": zod.number(),
   "userId": zod.number(),
   "title": zod.string(),
+  "subject": zod.string(),
   "topic": zod.string(),
+  "difficulty": zod.enum(['easy', 'medium', 'hard']),
+  "questionType": zod.enum(['mcq', 'true_false', 'fill_blank', 'short_answer']),
   "questionCount": zod.number(),
+  "questions": zod.array(zod.object({
+  "id": zod.number(),
+  "question": zod.string(),
+  "type": zod.enum(['mcq', 'true_false', 'fill_blank', 'short_answer']),
+  "options": zod.array(zod.string()).optional(),
+  "correctAnswer": zod.string(),
+  "explanation": zod.string()
+})).optional(),
   "score": zod.number().nullable(),
-  "status": zod.enum(['pending', 'completed', 'archived']),
+  "totalCorrect": zod.number().nullish(),
+  "totalWrong": zod.number().nullish(),
+  "timeTakenSeconds": zod.number().nullish(),
+  "status": zod.enum(['generating', 'ready', 'in_progress', 'completed', 'archived']),
   "createdAt": zod.coerce.date()
 })
 
 
 /**
- * @summary Get quiz by ID
+ * @summary Get quiz by ID (includes questions)
  */
 export const GetQuizParams = zod.object({
   "id": zod.coerce.number()
@@ -136,10 +167,24 @@ export const GetQuizResponse = zod.object({
   "id": zod.number(),
   "userId": zod.number(),
   "title": zod.string(),
+  "subject": zod.string(),
   "topic": zod.string(),
+  "difficulty": zod.enum(['easy', 'medium', 'hard']),
+  "questionType": zod.enum(['mcq', 'true_false', 'fill_blank', 'short_answer']),
   "questionCount": zod.number(),
+  "questions": zod.array(zod.object({
+  "id": zod.number(),
+  "question": zod.string(),
+  "type": zod.enum(['mcq', 'true_false', 'fill_blank', 'short_answer']),
+  "options": zod.array(zod.string()).optional(),
+  "correctAnswer": zod.string(),
+  "explanation": zod.string()
+})).optional(),
   "score": zod.number().nullable(),
-  "status": zod.enum(['pending', 'completed', 'archived']),
+  "totalCorrect": zod.number().nullish(),
+  "totalWrong": zod.number().nullish(),
+  "timeTakenSeconds": zod.number().nullish(),
+  "status": zod.enum(['generating', 'ready', 'in_progress', 'completed', 'archived']),
   "createdAt": zod.coerce.date()
 })
 
@@ -152,6 +197,40 @@ export const DeleteQuizParams = zod.object({
 })
 
 export const DeleteQuizResponse = zod.void()
+
+
+/**
+ * @summary Submit quiz answers and get scored results
+ */
+export const SubmitQuizParams = zod.object({
+  "id": zod.coerce.number()
+})
+
+export const SubmitQuizBody = zod.object({
+  "answers": zod.array(zod.object({
+  "questionId": zod.number(),
+  "answer": zod.string()
+})),
+  "timeTakenSeconds": zod.number()
+})
+
+export const SubmitQuizResponse = zod.object({
+  "quizId": zod.number(),
+  "score": zod.number(),
+  "percentage": zod.number(),
+  "totalCorrect": zod.number(),
+  "totalWrong": zod.number(),
+  "timeTakenSeconds": zod.number(),
+  "results": zod.array(zod.object({
+  "questionId": zod.number(),
+  "question": zod.string(),
+  "yourAnswer": zod.string(),
+  "correctAnswer": zod.string(),
+  "isCorrect": zod.boolean(),
+  "explanation": zod.string(),
+  "options": zod.array(zod.string()).optional()
+}))
+})
 
 
 /**
@@ -439,5 +518,48 @@ export const GetTutorSessionResponse = zod.object({
   "lastMessageAt": zod.coerce.date().nullish(),
   "createdAt": zod.coerce.date()
 })
+
+
+/**
+ * @summary Delete a tutor session and its messages
+ */
+export const DeleteTutorSessionParams = zod.object({
+  "id": zod.coerce.number()
+})
+
+export const DeleteTutorSessionResponse = zod.void()
+
+
+/**
+ * @summary Get all messages in a tutor session
+ */
+export const GetTutorMessagesParams = zod.object({
+  "id": zod.coerce.number()
+})
+
+export const GetTutorMessagesResponseItem = zod.object({
+  "id": zod.number(),
+  "sessionId": zod.number(),
+  "role": zod.enum(['user', 'assistant']),
+  "content": zod.string(),
+  "createdAt": zod.coerce.date()
+})
+export const GetTutorMessagesResponse = zod.array(GetTutorMessagesResponseItem)
+
+
+/**
+ * Returns an SSE stream. Each event is `data: {"content": "..."}`.
+ * Ends with `data: {"done": true}`. Consume with fetch + ReadableStream.
+ * @summary Send a message and receive a streaming AI response
+ */
+export const SendTutorMessageParams = zod.object({
+  "id": zod.coerce.number()
+})
+
+export const SendTutorMessageBody = zod.object({
+  "content": zod.string()
+})
+
+export const SendTutorMessageResponse = zod.unknown()
 
 

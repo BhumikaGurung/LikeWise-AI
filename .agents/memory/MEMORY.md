@@ -1,0 +1,4 @@
+- [AI service modularity](ai-service-modularity.md) — aiService.ts is the single file to swap when wiring a real AI provider (Gemini or OpenAI).
+- [SSE chat pattern](sse-chat-pattern.md) — AI Tutor chat uses raw fetch + ReadableStream; Orval cannot generate SSE hooks.
+- [Quiz question storage](quiz-question-storage.md) — Questions stored as JSONB in quizzes.questions column; scoring done server-side in submit route.
+- [DB rebuild after schema change](db-rebuild-rule.md) — After any lib/* schema change, run typecheck:libs then DB push before touching leaf artifact checks.
