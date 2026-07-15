@@ -1,0 +1,320 @@
+You are continuing the existing LearnWise AI project.
+
+IMPORTANT
+
+Do NOT recreate the project.
+
+Do NOT remove existing code.
+
+Do NOT change the folder structure.
+
+Extend the current project professionally.
+
+Keep frontend and backend separate.
+
+Use React + Vite + Tailwind CSS + Node.js + Express + Supabase.
+
+==================================================
+
+GOAL
+
+Transform LearnWise AI into a complete AI-powered learning platform.
+
+Implement:
+
+1. PDF Learning
+2. Flashcards
+3. AI Study Planner
+4. Notes
+5. Learning Analytics
+6. Progress Dashboard
+
+==================================================
+
+FEATURE 1
+
+PDF LEARNING
+
+Create a modern PDF Learning page.
+
+Allow users to:
+
+• Upload PDF
+• Drag and Drop
+• Browse Files
+• Delete uploaded PDF
+• View uploaded PDFs
+
+Display
+
+• File name
+• Upload time
+• File size
+• Total pages
+• Preview panel
+
+Create placeholder APIs for future Gemini integration.
+
+Backend APIs
+
+GET /api/pdf
+
+POST /api/pdf/upload
+
+DELETE /api/pdf/:id
+
+==================================================
+
+FEATURE 2
+
+FLASHCARDS
+
+Create beautiful flashcards.
+
+Features
+
+Flip animation
+
+Previous
+
+Next
+
+Shuffle
+
+Bookmark
+
+Mark as Learned
+
+Category Filter
+
+Difficulty
+
+Search
+
+Save flashcards
+
+Backend
+
+GET /api/flashcards
+
+POST /api/flashcards
+
+DELETE /api/flashcards/:id
+
+==================================================
+
+FEATURE 3
+
+AI STUDY PLANNER
+
+Create Study Planner page.
+
+User enters
+
+Exam Date
+
+Subjects
+
+Hours per day
+
+Study Goal
+
+Priority
+
+Generate Study Plan
+
+Display
+
+Daily schedule
+
+Weekly calendar
+
+Completed Tasks
+
+Remaining Tasks
+
+Progress Bar
+
+Export plan as PDF (placeholder)
+
+Backend APIs
+
+POST /api/planner
+
+GET /api/planner
+
+==================================================
+
+FEATURE 4
+
+NOTES
+
+Create Notes page.
+
+Users can
+
+Create notes
+
+Edit notes
+
+Delete notes
+
+Search notes
+
+Pin notes
+
+Favourite notes
+
+==================================================
+
+FEATURE 5
+
+LEARNING ANALYTICS
+
+Dashboard cards
+
+Study Hours
+
+Completed Quizzes
+
+Completed Flashcards
+
+Average Score
+
+Study Streak
+
+Topics Learned
+
+Charts
+
+Weekly Activity
+
+Monthly Progress
+
+Learning Trend
+
+==================================================
+
+FEATURE 6
+
+PROFILE
+
+Profile picture
+
+Edit profile
+
+Learning goals
+
+Preferred subjects
+
+Dark Mode
+
+Notifications
+
+==================================================
+
+DATABASE
+
+Create tables
+
+uploaded_pdfs
+
+flashcards
+
+study_plans
+
+notes
+
+learning_progress
+
+analytics
+
+==================================================
+
+BACKEND
+
+Create routes
+
+/api/pdf
+
+/api/flashcards
+
+/api/planner
+
+/api/notes
+
+/api/progress
+
+/api/analytics
+
+Return sample JSON for now.
+
+==================================================
+
+UI
+
+Continue existing design.
+
+Premium SaaS.
+
+Blue & Purple gradient.
+
+Glassmorphism.
+
+Rounded cards.
+
+Responsive.
+
+Dark mode.
+
+Smooth animations.
+
+Loading skeletons.
+
+Toast notifications.
+
+==================================================
+
+SECURITY
+
+Validate input.
+
+Protect authenticated routes.
+
+Use middleware.
+
+Handle errors professionally.
+
+==================================================
+
+DO NOT
+
+Implement Gemini API yet.
+
+Do not require OpenAI.
+
+Use placeholder responses where AI would normally be used.
+
+==================================================
+
+OUTPUT
+
+Generate
+
+Frontend pages
+
+Backend routes
+
+Controllers
+
+Services
+
+Database schema
+
+Reusable React components
+
+Responsive UI
+
+Update README
+
+Explain all newly added pages and APIs.

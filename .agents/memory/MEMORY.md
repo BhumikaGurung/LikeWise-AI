@@ -2,3 +2,5 @@
 - [SSE chat pattern](sse-chat-pattern.md) — AI Tutor chat uses raw fetch + ReadableStream; Orval cannot generate SSE hooks.
 - [Quiz question storage](quiz-question-storage.md) — Questions stored as JSONB in quizzes.questions column; scoring done server-side in submit route.
 - [DB rebuild after schema change](db-rebuild-rule.md) — After any lib/* schema change, run typecheck:libs then DB push before touching leaf artifact checks.
+- [Flashcard cards storage](flashcard-cards-storage.md) — Cards stored as JSONB in flashcard_sets.cards; stub cards generated server-side on POST /flashcards.
+- [Notes feature](notes-feature.md) — Full notes CRUD: lib/db schema, OpenAPI, backend route, and notes.tsx page all wired end-to-end.

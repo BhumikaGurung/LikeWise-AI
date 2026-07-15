@@ -24,6 +24,8 @@ tags:
     description: PDF upload and management
   - name: tutor
     description: AI Tutor sessions and chat
+  - name: notes
+    description: Notes management
 
 paths:
   /healthz:
@@ -420,6 +422,98 @@ paths:
         "204":
           description: Deleted
 
+  # ─── Notes ──────────────────────────────────────────────────────────────────
+  /notes:
+    get:
+      operationId: getNotes
+      tags: [notes]
+      summary: List user notes
+      responses:
+        "200":
+          description: List of notes
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Note"
+    post:
+      operationId: createNote
+      tags: [notes]
+      summary: Create a note
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/NoteInput"
+      responses:
+        "201":
+          description: Created note
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Note"
+
+  /notes/{id}:
+    get:
+      operationId: getNote
+      tags: [notes]
+      summary: Get a note by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Note
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Note"
+        "404":
+          description: Not found
+    patch:
+      operationId: updateNote
+      tags: [notes]
+      summary: Update a note
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/NoteUpdate"
+      responses:
+        "200":
+          description: Updated note
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Note"
+        "404":
+          description: Not found
+    delete:
+      operationId: deleteNote
+      tags: [notes]
+      summary: Delete a note
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+
   # ─── AI Tutor Sessions ───────────────────────────────────────────────────────
   /tutor/sessions:
     get:
@@ -761,6 +855,24 @@ components:
             $ref: "#/components/schemas/QuizResultQuestion"
 
     # ─── Flashcards ──────────────────────────────────────────────────────────
+    FlashcardCard:
+      type: object
+      required: [id, front, back]
+      properties:
+        id:
+          type: integer
+        front:
+          type: string
+        back:
+          type: string
+        isLearned:
+          type: boolean
+        isBookmarked:
+          type: boolean
+        difficulty:
+          type: string
+          enum: [easy, medium, hard]
+
     FlashcardSet:
       type: object
       required: [id, userId, title, topic, cardCount, createdAt]
@@ -775,6 +887,10 @@ components:
           type: string
         cardCount:
           type: integer
+        cards:
+          type: array
+          items:
+            $ref: "#/components/schemas/FlashcardCard"
         lastStudiedAt:
           type: ["string", "null"]
           format: date-time
@@ -941,4 +1057,59 @@ components:
       required: [content]
       properties:
         content:
+          type: string
+
+    # ─── Notes ───────────────────────────────────────────────────────────────
+    Note:
+      type: object
+      required: [id, userId, title, content, isPinned, isFavorite, color, createdAt, updatedAt]
+      properties:
+        id:
+          type: integer
+        userId:
+          type: integer
+        title:
+          type: string
+        content:
+          type: string
+        isPinned:
+          type: boolean
+        isFavorite:
+          type: boolean
+        color:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    NoteInput:
+      type: object
+      required: [title]
+      properties:
+        title:
+          type: string
+        content:
+          type: string
+        isPinned:
+          type: boolean
+        isFavorite:
+          type: boolean
+        color:
+          type: string
+
+    NoteUpdate:
+      type: object
+      properties:
+        title:
+          type: string
+        content:
+          type: string
+        isPinned:
+          type: boolean
+        isFavorite:
+          type: boolean
+        color:
           type: string

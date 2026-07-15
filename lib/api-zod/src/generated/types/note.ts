@@ -5,16 +5,15 @@
  * LearnWise AI API specification
  * OpenAPI spec version: 0.1.0
  */
-import type { FlashcardCard } from './flashcardCard';
 
-export interface FlashcardSet {
+export interface Note {
   id: number;
   userId: number;
   title: string;
-  topic: string;
-  cardCount: number;
-  cards?: FlashcardCard[];
-  /** @nullable */
-  lastStudiedAt?: Date | null;
+  content: string;
+  isPinned: boolean;
+  isFavorite: boolean;
+  color: string;
   createdAt: Date;
+  updatedAt: Date;
 }

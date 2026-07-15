@@ -1,0 +1,289 @@
+Continue the existing LearnWise AI project.
+
+Do NOT rebuild the project.
+
+Maintain the current architecture.
+
+Maintain the existing design.
+
+=====================================================
+
+GOAL
+
+Transform LearnWise AI into a complete AI Learning Platform.
+
+Implement
+
+1. PDF Learning
+
+2. Flashcards
+
+3. AI Study Planner
+
+4. Progress Dashboard
+
+5. Learning Analytics
+
+=====================================================
+
+FEATURE 1
+
+PDF LEARNING
+
+Create a modern PDF Learning page.
+
+Users can
+
+Upload PDF
+
+Drag and Drop
+
+Browse Files
+
+Maximum 20MB
+
+Show upload progress.
+
+Display
+
+PDF Preview
+
+File Name
+
+Pages
+
+Upload Time
+
+Summary Panel
+
+Key Concepts
+
+Important Topics
+
+Notes Placeholder
+
+Quiz From PDF Button
+
+Flashcards From PDF Button
+
+=====================================================
+
+FEATURE 2
+
+FLASHCARDS
+
+Generate beautiful flashcards.
+
+Cards should include
+
+Question
+
+Answer
+
+Flip Animation
+
+Previous
+
+Next
+
+Shuffle
+
+Mark Learned
+
+Bookmark
+
+Save
+
+Search Flashcards
+
+Categories
+
+=====================================================
+
+FEATURE 3
+
+AI STUDY PLANNER
+
+Allow users to enter
+
+Exam Date
+
+Subjects
+
+Hours Per Day
+
+Difficulty Level
+
+Learning Goal
+
+Generate Study Plan.
+
+Display
+
+Daily Plan
+
+Weekly Calendar
+
+Task List
+
+Completed Tasks
+
+Remaining Tasks
+
+Progress Bar
+
+=====================================================
+
+FEATURE 4
+
+PROGRESS DASHBOARD
+
+Display
+
+Study Streak
+
+Total Learning Hours
+
+Completed Quizzes
+
+Average Score
+
+Completed Flashcards
+
+Completed Study Plans
+
+Upcoming Tasks
+
+Weekly Progress Chart
+
+Monthly Progress Chart
+
+=====================================================
+
+FEATURE 5
+
+QUIZ HISTORY
+
+Create history page.
+
+Display
+
+Quiz Name
+
+Date
+
+Score
+
+Time Taken
+
+Difficulty
+
+Retry Quiz
+
+Delete
+
+=====================================================
+
+FEATURE 6
+
+PROFILE
+
+Allow users to
+
+Edit Name
+
+Profile Picture
+
+Learning Goals
+
+Preferred Subjects
+
+Dark Mode
+
+Notifications
+
+=====================================================
+
+DATABASE
+
+Create database support for
+
+Uploaded PDFs
+
+Flashcards
+
+Study Plans
+
+Progress
+
+Quiz History
+
+Bookmarks
+
+=====================================================
+
+BACKEND
+
+Create APIs
+
+/api/pdf
+
+/api/flashcards
+
+/api/planner
+
+/api/progress
+
+/api/history
+
+Return sample data for now.
+
+=====================================================
+
+DESIGN
+
+Premium SaaS UI.
+
+Glassmorphism.
+
+Blue and Purple Theme.
+
+Modern Cards.
+
+Responsive.
+
+Framer Motion animations.
+
+Loading skeletons.
+
+Empty states.
+
+Toast notifications.
+
+=====================================================
+
+OUTPUT
+
+Generate
+
+Frontend pages
+
+Backend APIs
+
+Database models
+
+Responsive layouts
+
+Charts
+
+Reusable components
+
+Explain
+
+Pages created
+
+Routes created
+
+Database changes
+
+Future Gemini AI integration points

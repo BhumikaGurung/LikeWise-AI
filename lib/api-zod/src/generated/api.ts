@@ -242,6 +242,14 @@ export const GetFlashcardSetsResponseItem = zod.object({
   "title": zod.string(),
   "topic": zod.string(),
   "cardCount": zod.number(),
+  "cards": zod.array(zod.object({
+  "id": zod.number(),
+  "front": zod.string(),
+  "back": zod.string(),
+  "isLearned": zod.boolean().optional(),
+  "isBookmarked": zod.boolean().optional(),
+  "difficulty": zod.enum(['easy', 'medium', 'hard']).optional()
+})).optional(),
   "lastStudiedAt": zod.coerce.date().nullish(),
   "createdAt": zod.coerce.date()
 })
@@ -266,6 +274,14 @@ export const CreateFlashcardSetResponse = zod.object({
   "title": zod.string(),
   "topic": zod.string(),
   "cardCount": zod.number(),
+  "cards": zod.array(zod.object({
+  "id": zod.number(),
+  "front": zod.string(),
+  "back": zod.string(),
+  "isLearned": zod.boolean().optional(),
+  "isBookmarked": zod.boolean().optional(),
+  "difficulty": zod.enum(['easy', 'medium', 'hard']).optional()
+})).optional(),
   "lastStudiedAt": zod.coerce.date().nullish(),
   "createdAt": zod.coerce.date()
 })
@@ -284,6 +300,14 @@ export const GetFlashcardSetResponse = zod.object({
   "title": zod.string(),
   "topic": zod.string(),
   "cardCount": zod.number(),
+  "cards": zod.array(zod.object({
+  "id": zod.number(),
+  "front": zod.string(),
+  "back": zod.string(),
+  "isLearned": zod.boolean().optional(),
+  "isBookmarked": zod.boolean().optional(),
+  "difficulty": zod.enum(['easy', 'medium', 'hard']).optional()
+})).optional(),
   "lastStudiedAt": zod.coerce.date().nullish(),
   "createdAt": zod.coerce.date()
 })
@@ -467,6 +491,105 @@ export const DeletePdfParams = zod.object({
 })
 
 export const DeletePdfResponse = zod.void()
+
+
+/**
+ * @summary List user notes
+ */
+export const GetNotesResponseItem = zod.object({
+  "id": zod.number(),
+  "userId": zod.number(),
+  "title": zod.string(),
+  "content": zod.string(),
+  "isPinned": zod.boolean(),
+  "isFavorite": zod.boolean(),
+  "color": zod.string(),
+  "createdAt": zod.coerce.date(),
+  "updatedAt": zod.coerce.date()
+})
+export const GetNotesResponse = zod.array(GetNotesResponseItem)
+
+
+/**
+ * @summary Create a note
+ */
+export const CreateNoteBody = zod.object({
+  "title": zod.string(),
+  "content": zod.string().optional(),
+  "isPinned": zod.boolean().optional(),
+  "isFavorite": zod.boolean().optional(),
+  "color": zod.string().optional()
+})
+
+export const CreateNoteResponse = zod.object({
+  "id": zod.number(),
+  "userId": zod.number(),
+  "title": zod.string(),
+  "content": zod.string(),
+  "isPinned": zod.boolean(),
+  "isFavorite": zod.boolean(),
+  "color": zod.string(),
+  "createdAt": zod.coerce.date(),
+  "updatedAt": zod.coerce.date()
+})
+
+
+/**
+ * @summary Get a note by ID
+ */
+export const GetNoteParams = zod.object({
+  "id": zod.coerce.number()
+})
+
+export const GetNoteResponse = zod.object({
+  "id": zod.number(),
+  "userId": zod.number(),
+  "title": zod.string(),
+  "content": zod.string(),
+  "isPinned": zod.boolean(),
+  "isFavorite": zod.boolean(),
+  "color": zod.string(),
+  "createdAt": zod.coerce.date(),
+  "updatedAt": zod.coerce.date()
+})
+
+
+/**
+ * @summary Update a note
+ */
+export const UpdateNoteParams = zod.object({
+  "id": zod.coerce.number()
+})
+
+export const UpdateNoteBody = zod.object({
+  "title": zod.string().optional(),
+  "content": zod.string().optional(),
+  "isPinned": zod.boolean().optional(),
+  "isFavorite": zod.boolean().optional(),
+  "color": zod.string().optional()
+})
+
+export const UpdateNoteResponse = zod.object({
+  "id": zod.number(),
+  "userId": zod.number(),
+  "title": zod.string(),
+  "content": zod.string(),
+  "isPinned": zod.boolean(),
+  "isFavorite": zod.boolean(),
+  "color": zod.string(),
+  "createdAt": zod.coerce.date(),
+  "updatedAt": zod.coerce.date()
+})
+
+
+/**
+ * @summary Delete a note
+ */
+export const DeleteNoteParams = zod.object({
+  "id": zod.coerce.number()
+})
+
+export const DeleteNoteResponse = zod.void()
 
 
 /**

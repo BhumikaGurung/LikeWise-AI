@@ -19,6 +19,7 @@ import StudyPlanner from '@/pages/study-planner';
 import Progress from '@/pages/progress';
 import Settings from '@/pages/settings';
 import Profile from '@/pages/profile';
+import Notes from '@/pages/notes';
 import { Shell } from '@/components/shell';
 
 const clerkPubKey = publishableKeyFromHost(
@@ -166,6 +167,7 @@ function Router() {
       <Route path="/progress"><ProtectedRoute component={Progress} /></Route>
       <Route path="/settings"><ProtectedRoute component={Settings} /></Route>
       <Route path="/profile"><ProtectedRoute component={Profile} /></Route>
+      <Route path="/notes"><ProtectedRoute component={Notes} /></Route>
       
       <Route component={NotFound} />
     </Switch>

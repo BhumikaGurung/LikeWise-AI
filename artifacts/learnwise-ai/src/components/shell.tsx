@@ -10,6 +10,7 @@ import {
   LogOut, 
   MessageSquare, 
   Settings, 
+  StickyNote,
   TrendingUp, 
   User 
 } from "lucide-react";
@@ -33,6 +34,7 @@ export function Shell({ children }: ShellProps) {
     { name: "Flashcards", href: "/flashcards", icon: Layers },
     { name: "Study Planner", href: "/study-planner", icon: BookOpen },
     { name: "Progress", href: "/progress", icon: TrendingUp },
+    { name: "Notes", href: "/notes", icon: StickyNote },
     { name: "Settings", href: "/settings", icon: Settings },
   ];
 

@@ -185,12 +185,31 @@ export interface QuizResult {
   results: QuizResultQuestion[];
 }
 
+export type FlashcardCardDifficulty = typeof FlashcardCardDifficulty[keyof typeof FlashcardCardDifficulty];
+
+
+export const FlashcardCardDifficulty = {
+  easy: 'easy',
+  medium: 'medium',
+  hard: 'hard',
+} as const;
+
+export interface FlashcardCard {
+  id: number;
+  front: string;
+  back: string;
+  isLearned?: boolean;
+  isBookmarked?: boolean;
+  difficulty?: FlashcardCardDifficulty;
+}
+
 export interface FlashcardSet {
   id: number;
   userId: number;
   title: string;
   topic: string;
   cardCount: number;
+  cards?: FlashcardCard[];
   /** @nullable */
   lastStudiedAt?: string | null;
   createdAt: string;
@@ -320,5 +339,33 @@ export interface ChatMessage {
 
 export interface ChatMessageInput {
   content: string;
+}
+
+export interface Note {
+  id: number;
+  userId: number;
+  title: string;
+  content: string;
+  isPinned: boolean;
+  isFavorite: boolean;
+  color: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface NoteInput {
+  title: string;
+  content?: string;
+  isPinned?: boolean;
+  isFavorite?: boolean;
+  color?: string;
+}
+
+export interface NoteUpdate {
+  title?: string;
+  content?: string;
+  isPinned?: boolean;
+  isFavorite?: boolean;
+  color?: string;
 }
 

@@ -6,3 +6,4 @@ export * from "./pdfs";
 export * from "./tutorSessions";
 export * from "./activity";
 export * from "./chatMessages";
+export * from "./notes";

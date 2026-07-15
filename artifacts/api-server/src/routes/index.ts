@@ -7,6 +7,7 @@ import flashcardsRouter from "./flashcards";
 import studyPlansRouter from "./studyPlans";
 import pdfsRouter from "./pdfs";
 import tutorRouter from "./tutor";
+import notesRouter from "./notes";
 
 const router: IRouter = Router();
 
@@ -18,5 +19,6 @@ router.use(flashcardsRouter);
 router.use(studyPlansRouter);
 router.use(pdfsRouter);
 router.use(tutorRouter);
+router.use(notesRouter);
 
 export default router;
