@@ -32,6 +32,19 @@ export default defineConfig({
     },
     dedupe: ['react', 'react-dom'],
   },
-  server: { port, strictPort: true, host: '0.0.0.0', allowedHosts: true, fs: { strict: true } },
+  server: {
+    port,
+    strictPort: true,
+    host: '0.0.0.0',
+    allowedHosts: true,
+    fs: { strict: true },
+    proxy: {
+      '/api': {
+        target: 'http://localhost:8080',
+        changeOrigin: true,
+        ws: true,
+      },
+    },
+  },
   preview: { port, host: '0.0.0.0', allowedHosts: true },
 });

@@ -4,14 +4,23 @@ An AI-powered learning platform where students can learn with an AI Tutor, gener
 
 ## Run & Operate
 
-- `pnpm --filter @workspace/learnwise-ai run dev` — run the frontend (port auto-assigned)
-- `pnpm --filter @workspace/api-server run dev` — run the API server
+Two workflows are configured and start automatically:
+- **API Server** — `PORT=8080 pnpm --filter @workspace/api-server run dev` (builds then starts on port 8080)
+- **LearnWise AI** — `PORT=5173 BASE_PATH=/ pnpm --filter @workspace/learnwise-ai run dev` (Vite dev server on port 5173)
+
+Other useful commands:
 - `pnpm run typecheck` — full typecheck across all packages
 - `pnpm run build` — typecheck + build all packages
 - `pnpm --filter @workspace/api-spec run codegen` — regenerate API hooks and Zod schemas from the OpenAPI spec
 - `pnpm --filter @workspace/db run push` — push DB schema changes (dev only)
-- Required env: `DATABASE_URL` — Postgres connection string (auto-provisioned)
-- Required env: `CLERK_SECRET_KEY`, `CLERK_PUBLISHABLE_KEY`, `VITE_CLERK_PUBLISHABLE_KEY` — auto-provisioned by Clerk
+
+Required env vars:
+- `DATABASE_URL` — Postgres connection string (auto-provisioned by Replit, do not set manually)
+- `CLERK_SECRET_KEY`, `CLERK_PUBLISHABLE_KEY`, `VITE_CLERK_PUBLISHABLE_KEY` — Clerk keys for real auth. When absent, the API server uses a dev auth bypass (`userId: dev-user-001`) so all endpoints work without login.
+
+## Dev auth bypass
+
+When `CLERK_PUBLISHABLE_KEY` is not set (or not a valid Clerk key), `app.ts` injects a branded mock `req.auth` that satisfies `@clerk/express`'s `getAuth(req)`. All routes authenticate as `dev-user-001`. To enable real auth, provision Clerk keys via the Replit Auth pane and set `CLERK_PUBLISHABLE_KEY` + `CLERK_SECRET_KEY`.
 
 ## Stack
 
