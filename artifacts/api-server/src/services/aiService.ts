@@ -1,17 +1,19 @@
 /**
  * AI Service — modular AI provider abstraction.
  *
- * Currently stubbed with deterministic sample data.
- * To switch to Google Gemini (or any other provider), only change this file:
- * 1. Import the Gemini SDK.
- * 2. Replace the body of `chat()` with Gemini's streaming chat API.
- * 3. Replace the body of `generateQuizQuestions()` with a Gemini completion call.
+ * chat() uses Google Gemini (GEMINI_API_KEY) for streaming tutor responses.
+ * generateQuizQuestions() remains stubbed — wire separately when needed.
  *
+ * To swap providers, only change this file.
  * The rest of the codebase (routes, frontend) stays untouched.
  */
 
+import { GoogleGenAI } from "@google/genai";
 import type { QuizDifficulty, QuizQuestionType } from "../prompts/quizPrompt";
 import { getTutorSystemPrompt, getQuizSystemPrompt, getQuizUserPrompt } from "../prompts/index";
+
+const geminiApiKey = process.env.GEMINI_API_KEY;
+const ai = geminiApiKey ? new GoogleGenAI({ apiKey: geminiApiKey }) : null;
 
 export interface QuizQuestion {
   id: number;
@@ -29,37 +31,45 @@ export interface ChatChunk {
 
 // ─── Stubbed stub AI responses ───────────────────────────────────────────────
 
-/** Streams simulated AI tutor response chunks. */
+/** Streams real Gemini tutor response chunks, with stub fallback if no API key. */
 export async function* chat(
   sessionSubject: string,
   messageHistory: Array<{ role: "user" | "assistant"; content: string }>,
   userMessage: string,
 ): AsyncGenerator<ChatChunk> {
-  void sessionSubject; // will be used by real provider with getTutorSystemPrompt()
-  void messageHistory;
-
-  // When a real AI is wired, replace everything below this comment:
-  // const response = await gemini.chat({ system: getTutorSystemPrompt(sessionSubject), messages: [...messageHistory, { role: "user", content: userMessage }], stream: true });
-  // for await (const chunk of response) { yield { content: chunk.text }; }
-
-  const stubResponses: Record<string, string> = {
-    default: `Great question! Here's a clear explanation:
-
-**${userMessage.replace(/^explain\s*/i, "")}** is a fundamental concept in computer science.
-
-Key points to understand:
-1. **Definition** — It refers to the way systems organize and manage information efficiently.
-2. **Why it matters** — Understanding this helps you build better software and solve problems more elegantly.
-3. **Real-world example** — Think of it like a well-organized library where every book has a clear place.
-
-Would you like me to go deeper into any of these points, or shall we try a practice exercise? 🎯`,
-  };
-
-  const words = (stubResponses.default).split(" ");
-  for (let i = 0; i < words.length; i++) {
-    await new Promise((r) => setTimeout(r, 30 + Math.random() * 40));
-    yield { content: words[i] + (i < words.length - 1 ? " " : "") };
+  if (!ai) {
+    // Fallback: no GEMINI_API_KEY configured — stream a clear error message
+    const msg = "⚠️ GEMINI_API_KEY is not configured. Please add it to your environment secrets.";
+    for (const word of msg.split(" ")) {
+      yield { content: word + " " };
+    }
+    yield { done: true };
+    return;
   }
+
+  // Map history to Gemini format (assistant → model); messageHistory already
+  // includes the current user message as its last entry.
+  const contents = messageHistory.map((m) => ({
+    role: m.role === "assistant" ? "model" : "user",
+    parts: [{ text: m.content }],
+  }));
+
+  const stream = await ai.models.generateContentStream({
+    model: "gemini-flash-latest",
+    contents,
+    config: {
+      systemInstruction: getTutorSystemPrompt(sessionSubject),
+      maxOutputTokens: 8192,
+    },
+  });
+
+  for await (const chunk of stream) {
+    const text = chunk.text;
+    if (text) {
+      yield { content: text };
+    }
+  }
+
   yield { done: true };
 }
 
