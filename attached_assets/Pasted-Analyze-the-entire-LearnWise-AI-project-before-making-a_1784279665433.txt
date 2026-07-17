@@ -1,0 +1,174 @@
+Analyze the entire LearnWise AI project before making any changes.
+
+IMPORTANT RULES
+
+- Do NOT recreate the project.
+- Do NOT redesign the UI.
+- Do NOT change the existing architecture.
+- Do NOT remove or rewrite working features.
+- Do NOT modify authentication, dashboard, navigation, responsive layout, or styling.
+- Preserve all existing frontend, backend, database schema, API routes, and functionality.
+- Work only on the remaining unfinished features.
+
+==================================================
+
+CURRENT STATUS
+
+The following features already work correctly:
+
+✔ Authentication (Clerk)
+✔ Dashboard
+✔ AI Tutor (Gemini)
+✔ Quiz Generator
+✔ Flashcards
+✔ Study Planner
+✔ Notes
+✔ Progress Dashboard
+✔ Analytics
+✔ Responsive UI
+✔ Dark Mode
+✔ GitHub Integration
+
+DO NOT MODIFY THESE FEATURES unless fixing a related bug.
+
+==================================================
+
+PRIMARY GOAL
+
+Fix the PDF Learning module completely.
+
+CURRENT ISSUE
+
+- PDF uploads successfully.
+- File remains stuck in "Processing".
+- Summary, Flashcards, Quiz, Key Points, and Important Questions are never generated.
+
+==================================================
+
+TASK 1
+
+Diagnose the complete PDF processing pipeline.
+
+Verify:
+
+- Upload endpoint
+- Storage
+- File retrieval
+- PDF parsing
+- Text extraction
+- Gemini request
+- Database updates
+- Processing status updates
+- Frontend polling/state updates
+
+Find the exact root cause.
+
+Fix only the root cause.
+
+==================================================
+
+TASK 2
+
+After fixing,
+
+PDF Learning must support:
+
+✔ Upload PDF
+
+✔ Processing indicator
+
+✔ Successful completion
+
+✔ AI Summary
+
+✔ Key Points
+
+✔ Important Questions
+
+✔ Flashcards
+
+✔ Practice Quiz
+
+✔ Retry processing if it fails
+
+✔ Delete uploaded PDF
+
+==================================================
+
+TASK 3
+
+Improve reliability.
+
+Handle:
+
+- Invalid PDF
+- Empty PDF
+- Large PDF
+- Gemini timeout
+- Gemini rate limit
+- API failure
+- Network interruption
+
+Display user-friendly messages.
+
+==================================================
+
+TASK 4
+
+Performance
+
+Avoid duplicate processing.
+
+Avoid duplicate API calls.
+
+Optimize PDF extraction.
+
+==================================================
+
+TASK 5
+
+Testing
+
+Automatically verify:
+
+✔ AI Tutor
+
+✔ Quiz Generator
+
+✔ Flashcards
+
+✔ Study Planner
+
+✔ Notes
+
+✔ PDF Learning
+
+Ensure Preview runs successfully.
+
+==================================================
+
+TASK 6
+
+Documentation
+
+At the end provide:
+
+- Root cause found
+- Files modified
+- APIs modified
+- Verification results
+- Remaining issues (if any)
+
+Create ONE checkpoint.
+
+Stop after successful verification.
+
+DO NOT start Docker.
+
+DO NOT modify AWS configuration.
+
+DO NOT generate documentation.
+
+DO NOT restructure folders.
+
+Focus ONLY on fixing PDF Learning and verifying the application.

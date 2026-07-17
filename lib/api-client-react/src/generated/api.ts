@@ -1780,6 +1780,77 @@ export const useDeletePdf = <TError = ErrorType<unknown>,
       return useMutation(getDeletePdfMutationOptions(options));
     }
 
+export const getReprocessPdfUrl = (id: number,) => {
+
+
+
+
+  return `/api/pdfs/${id}/reprocess`
+}
+
+/**
+ * @summary Retry AI processing for a PDF
+ */
+export const reprocessPdf = async (id: number, options?: RequestInit): Promise<PdfDocument> => {
+
+  return customFetch<PdfDocument>(getReprocessPdfUrl(id),
+  {
+    ...options,
+    method: 'POST'
+
+
+  }
+);}
+
+
+
+
+
+export const getReprocessPdfMutationOptions = <TError = ErrorType<void>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof reprocessPdf>>, TError,{id: number}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof reprocessPdf>>, TError,{id: number}, TContext> => {
+
+const mutationKey = ['reprocessPdf'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof reprocessPdf>>, {id: number}> = (props) => {
+          const {id} = props ?? {};
+
+          return  reprocessPdf(id,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type ReprocessPdfMutationResult = NonNullable<Awaited<ReturnType<typeof reprocessPdf>>>
+
+    export type ReprocessPdfMutationError = ErrorType<void>
+
+    /**
+ * @summary Retry AI processing for a PDF
+ */
+export const useReprocessPdf = <TError = ErrorType<void>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof reprocessPdf>>, TError,{id: number}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof reprocessPdf>>,
+        TError,
+        {id: number},
+        TContext
+      > => {
+      return useMutation(getReprocessPdfMutationOptions(options));
+    }
+
 export const getGetNotesUrl = () => {
 
 

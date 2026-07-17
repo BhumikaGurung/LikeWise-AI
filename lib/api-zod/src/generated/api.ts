@@ -437,6 +437,20 @@ export const GetPdfsResponseItem = zod.object({
   "fileSize": zod.number(),
   "pageCount": zod.number().nullish(),
   "status": zod.enum(['processing', 'ready', 'error']),
+  "summary": zod.string().nullish(),
+  "keyPoints": zod.array(zod.string()).nullish(),
+  "importantQuestions": zod.array(zod.string()).nullish(),
+  "flashcards": zod.array(zod.object({
+  "front": zod.string(),
+  "back": zod.string()
+})).nullish(),
+  "quiz": zod.array(zod.object({
+  "question": zod.string(),
+  "options": zod.array(zod.string()),
+  "correctAnswer": zod.string(),
+  "explanation": zod.string()
+})).nullish(),
+  "errorMessage": zod.string().nullish(),
   "createdAt": zod.coerce.date()
 })
 export const GetPdfsResponse = zod.array(GetPdfsResponseItem)
@@ -460,6 +474,20 @@ export const CreatePdfResponse = zod.object({
   "fileSize": zod.number(),
   "pageCount": zod.number().nullish(),
   "status": zod.enum(['processing', 'ready', 'error']),
+  "summary": zod.string().nullish(),
+  "keyPoints": zod.array(zod.string()).nullish(),
+  "importantQuestions": zod.array(zod.string()).nullish(),
+  "flashcards": zod.array(zod.object({
+  "front": zod.string(),
+  "back": zod.string()
+})).nullish(),
+  "quiz": zod.array(zod.object({
+  "question": zod.string(),
+  "options": zod.array(zod.string()),
+  "correctAnswer": zod.string(),
+  "explanation": zod.string()
+})).nullish(),
+  "errorMessage": zod.string().nullish(),
   "createdAt": zod.coerce.date()
 })
 
@@ -479,6 +507,20 @@ export const GetPdfResponse = zod.object({
   "fileSize": zod.number(),
   "pageCount": zod.number().nullish(),
   "status": zod.enum(['processing', 'ready', 'error']),
+  "summary": zod.string().nullish(),
+  "keyPoints": zod.array(zod.string()).nullish(),
+  "importantQuestions": zod.array(zod.string()).nullish(),
+  "flashcards": zod.array(zod.object({
+  "front": zod.string(),
+  "back": zod.string()
+})).nullish(),
+  "quiz": zod.array(zod.object({
+  "question": zod.string(),
+  "options": zod.array(zod.string()),
+  "correctAnswer": zod.string(),
+  "explanation": zod.string()
+})).nullish(),
+  "errorMessage": zod.string().nullish(),
   "createdAt": zod.coerce.date()
 })
 
@@ -491,6 +533,39 @@ export const DeletePdfParams = zod.object({
 })
 
 export const DeletePdfResponse = zod.void()
+
+
+/**
+ * @summary Retry AI processing for a PDF
+ */
+export const ReprocessPdfParams = zod.object({
+  "id": zod.coerce.number()
+})
+
+export const ReprocessPdfResponse = zod.object({
+  "id": zod.number(),
+  "userId": zod.number(),
+  "fileName": zod.string(),
+  "originalName": zod.string(),
+  "fileSize": zod.number(),
+  "pageCount": zod.number().nullish(),
+  "status": zod.enum(['processing', 'ready', 'error']),
+  "summary": zod.string().nullish(),
+  "keyPoints": zod.array(zod.string()).nullish(),
+  "importantQuestions": zod.array(zod.string()).nullish(),
+  "flashcards": zod.array(zod.object({
+  "front": zod.string(),
+  "back": zod.string()
+})).nullish(),
+  "quiz": zod.array(zod.object({
+  "question": zod.string(),
+  "options": zod.array(zod.string()),
+  "correctAnswer": zod.string(),
+  "explanation": zod.string()
+})).nullish(),
+  "errorMessage": zod.string().nullish(),
+  "createdAt": zod.coerce.date()
+})
 
 
 /**

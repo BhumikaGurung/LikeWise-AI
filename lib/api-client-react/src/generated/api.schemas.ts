@@ -270,6 +270,18 @@ export interface StudyPlanUpdate {
   progressPercent?: number;
 }
 
+export interface PdfFlashcard {
+  front: string;
+  back: string;
+}
+
+export interface PdfQuizQuestion {
+  question: string;
+  options: string[];
+  correctAnswer: string;
+  explanation: string;
+}
+
 export type PdfDocumentStatus = typeof PdfDocumentStatus[keyof typeof PdfDocumentStatus];
 
 
@@ -288,6 +300,18 @@ export interface PdfDocument {
   /** @nullable */
   pageCount?: number | null;
   status: PdfDocumentStatus;
+  /** @nullable */
+  summary?: string | null;
+  /** @nullable */
+  keyPoints?: string[] | null;
+  /** @nullable */
+  importantQuestions?: string[] | null;
+  /** @nullable */
+  flashcards?: PdfFlashcard[] | null;
+  /** @nullable */
+  quiz?: PdfQuizQuestion[] | null;
+  /** @nullable */
+  errorMessage?: string | null;
   createdAt: string;
 }
 

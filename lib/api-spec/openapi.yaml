@@ -422,6 +422,27 @@ paths:
         "204":
           description: Deleted
 
+  /pdfs/{id}/reprocess:
+    post:
+      operationId: reprocessPdf
+      tags: [pdfs]
+      summary: Retry AI processing for a PDF
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "202":
+          description: Reprocessing started
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PdfDocument"
+        "404":
+          description: Not found
+
   # ─── Notes ──────────────────────────────────────────────────────────────────
   /notes:
     get:
@@ -969,6 +990,30 @@ components:
           type: integer
 
     # ─── PDFs ────────────────────────────────────────────────────────────────
+    PdfFlashcard:
+      type: object
+      required: [front, back]
+      properties:
+        front:
+          type: string
+        back:
+          type: string
+
+    PdfQuizQuestion:
+      type: object
+      required: [question, options, correctAnswer, explanation]
+      properties:
+        question:
+          type: string
+        options:
+          type: array
+          items:
+            type: string
+        correctAnswer:
+          type: string
+        explanation:
+          type: string
+
     PdfDocument:
       type: object
       required: [id, userId, fileName, originalName, fileSize, status, createdAt]
@@ -988,6 +1033,26 @@ components:
         status:
           type: string
           enum: [processing, ready, error]
+        summary:
+          type: ["string", "null"]
+        keyPoints:
+          type: ["array", "null"]
+          items:
+            type: string
+        importantQuestions:
+          type: ["array", "null"]
+          items:
+            type: string
+        flashcards:
+          type: ["array", "null"]
+          items:
+            $ref: "#/components/schemas/PdfFlashcard"
+        quiz:
+          type: ["array", "null"]
+          items:
+            $ref: "#/components/schemas/PdfQuizQuestion"
+        errorMessage:
+          type: ["string", "null"]
         createdAt:
           type: string
           format: date-time

@@ -11,6 +11,8 @@
 import { GoogleGenAI } from "@google/genai";
 import type { QuizDifficulty, QuizQuestionType } from "../prompts/quizPrompt";
 import { getTutorSystemPrompt, getQuizSystemPrompt, getQuizUserPrompt } from "../prompts/index";
+import { getPdfAnalysisPrompt } from "../prompts/pdfPrompt";
+import type { PdfFlashcard, PdfQuizQuestion } from "@workspace/db";
 
 const geminiApiKey = process.env.GEMINI_API_KEY;
 const ai = geminiApiKey ? new GoogleGenAI({ apiKey: geminiApiKey }) : null;
@@ -71,6 +73,69 @@ export async function* chat(
   }
 
   yield { done: true };
+}
+
+export interface PdfAnalysisResult {
+  summary: string;
+  keyPoints: string[];
+  importantQuestions: string[];
+  flashcards: PdfFlashcard[];
+  quiz: PdfQuizQuestion[];
+}
+
+/**
+ * Analyses extracted PDF text with Gemini and returns structured learning content.
+ * Throws on Gemini error so the caller can set status → "error".
+ */
+export async function processPdfText(text: string): Promise<PdfAnalysisResult> {
+  if (!ai) {
+    throw new Error("GEMINI_API_KEY is not configured — cannot process PDF.");
+  }
+
+  const trimmed = text.trim();
+  if (!trimmed) {
+    throw new Error("PDF contains no extractable text.");
+  }
+
+  const response = await ai.models.generateContent({
+    model: "gemini-flash-latest",
+    contents: [{ role: "user", parts: [{ text: getPdfAnalysisPrompt(trimmed) }] }],
+    config: {
+      responseMimeType: "application/json",
+      maxOutputTokens: 8192,
+    },
+  });
+
+  const raw = response.text ?? "";
+  // Strip markdown code fences if the model wraps them anyway
+  const cleaned = raw.replace(/^```(?:json)?\n?/i, "").replace(/\n?```$/i, "").trim();
+
+  let parsed: unknown;
+  try {
+    parsed = JSON.parse(cleaned);
+  } catch {
+    throw new Error(`Gemini returned invalid JSON: ${cleaned.slice(0, 200)}`);
+  }
+
+  // Basic structural validation
+  const result = parsed as Record<string, unknown>;
+  if (
+    typeof result.summary !== "string" ||
+    !Array.isArray(result.keyPoints) ||
+    !Array.isArray(result.importantQuestions) ||
+    !Array.isArray(result.flashcards) ||
+    !Array.isArray(result.quiz)
+  ) {
+    throw new Error("Gemini response is missing required fields.");
+  }
+
+  return {
+    summary: result.summary,
+    keyPoints: result.keyPoints as string[],
+    importantQuestions: result.importantQuestions as string[],
+    flashcards: result.flashcards as PdfFlashcard[],
+    quiz: result.quiz as PdfQuizQuestion[],
+  };
 }
 
 /** Generates quiz questions. Returns stubbed data until a real provider is wired. */

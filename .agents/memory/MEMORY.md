@@ -5,3 +5,4 @@
 - [DB rebuild after schema change](db-rebuild-rule.md) — After any lib/* schema change, run typecheck:libs then DB push before touching leaf artifact checks.
 - [Flashcard cards storage](flashcard-cards-storage.md) — Cards stored as JSONB in flashcard_sets.cards; stub cards generated server-side on POST /flashcards.
 - [Notes feature](notes-feature.md) — Full notes CRUD: lib/db schema, OpenAPI, backend route, and notes.tsx page all wired end-to-end.
+- [PDF pipeline](pdf-pipeline.md) — Full PDF Learning pipeline: upload→parse→Gemini→poll. Critical: import pdf-parse via sub-path to avoid startup crash.

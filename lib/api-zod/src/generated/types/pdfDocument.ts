@@ -6,6 +6,8 @@
  * OpenAPI spec version: 0.1.0
  */
 import type { PdfDocumentStatus } from './pdfDocumentStatus';
+import type { PdfFlashcard } from './pdfFlashcard';
+import type { PdfQuizQuestion } from './pdfQuizQuestion';
 
 export interface PdfDocument {
   id: number;
@@ -16,5 +18,17 @@ export interface PdfDocument {
   /** @nullable */
   pageCount?: number | null;
   status: PdfDocumentStatus;
+  /** @nullable */
+  summary?: string | null;
+  /** @nullable */
+  keyPoints?: string[] | null;
+  /** @nullable */
+  importantQuestions?: string[] | null;
+  /** @nullable */
+  flashcards?: PdfFlashcard[] | null;
+  /** @nullable */
+  quiz?: PdfQuizQuestion[] | null;
+  /** @nullable */
+  errorMessage?: string | null;
   createdAt: Date;
 }
