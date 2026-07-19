@@ -1,4 +1,6 @@
 import express, { type Express } from "express";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 import cors from "cors";
 import pinoHttp from "pino-http";
 import { clerkMiddleware } from "@clerk/express";
@@ -38,6 +40,15 @@ const CLERK_AUTH_BRAND = Symbol.for("@clerk/express.auth");
 
 // Dev user injected when Clerk is not configured (development only).
 const DEV_USER_ID = "dev-user-001";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// Path to the React production build
+const clientDistPath = path.resolve(
+  __dirname,
+  "../../learnwise-ai/dist"
+);
 
 const app: Express = express();
 
@@ -115,5 +126,16 @@ if (hasValidClerkKey) {
 }
 
 app.use("/api", router);
+
+// Serve React static files
+app.use(express.static(clientDistPath));
+
+app.use((req, res) => {
+  if (req.path.startsWith("/api")) {
+    return res.status(404).end();
+  }
+
+  res.sendFile(path.join(clientDistPath, "index.html"));
+});
 
 export default app;
