@@ -8,6 +8,7 @@ COPY . .
 
 RUN pnpm install --frozen-lockfile=false
 
+RUN pnpm --filter @workspace/learnwise-ai build
 RUN pnpm --filter @workspace/api-server build
 
 EXPOSE 8080
