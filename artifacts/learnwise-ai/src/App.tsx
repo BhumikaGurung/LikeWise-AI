@@ -21,7 +21,9 @@ import Profile from '@/pages/profile';
 import Notes from '@/pages/notes';
 import { Shell } from '@/components/shell';
 
-const clerkPubKey = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
+const clerkPubKey =
+  import.meta.env.VITE_CLERK_PUBLISHABLE_KEY ||
+  "pk_test_c2F2aW5nLXJhY2VyLTQwLmNsZXJrLmFjY291bnRzLmRldiQ";
 console.log("Clerk Key:", import.meta.env.VITE_CLERK_PUBLISHABLE_KEY);
 
 const clerkProxyUrl = import.meta.env.VITE_CLERK_PROXY_URL;
