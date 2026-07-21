@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="assets/logo.png" alt="LearnWise AI Logo" width="180"/>
+<img src="./assets/logo.png" alt="LearnWise AI Logo" width="180"/>
 
 # LearnWise AI
 
