@@ -25,6 +25,7 @@ const clerkPubKey =
   import.meta.env.VITE_CLERK_PUBLISHABLE_KEY ||
   "pk_test_c2F2aW5nLXJhY2VyLTQwLmNsZXJrLmFjY291bnRzLmRldiQ";
 console.log("Clerk Key:", import.meta.env.VITE_CLERK_PUBLISHABLE_KEY);
+console.log("BASE_URL:", import.meta.env.BASE_URL);
 
 const clerkProxyUrl = import.meta.env.VITE_CLERK_PROXY_URL;
 const basePath = import.meta.env.BASE_URL.replace(/\/$/, "");

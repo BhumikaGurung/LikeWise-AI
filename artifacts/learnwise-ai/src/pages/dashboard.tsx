@@ -21,9 +21,9 @@ export default function Dashboard() {
   const recentFlashcards = flashcards?.slice(0, 2) || [];
 
   return (
-    <div className="pb-10">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 tracking-tight">Welcome back!</h1>
+    <div className="pb-6 sm:pb-10">
+      <div className="mb-6 sm:mb-8">
+        <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 tracking-tight">Welcome back!</h1>
         <p className="text-gray-500 mt-1">Here's your learning overview for today.</p>
       </div>
 
@@ -40,14 +40,14 @@ export default function Dashboard() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: i * 0.1 }}
             key={i} 
-            className="bg-white rounded-xl border border-gray-100 shadow-sm p-5 flex items-center gap-4"
+            className="bg-white rounded-xl border border-gray-100 shadow-sm p-4 sm:p-5 flex items-center gap-4"
           >
-            <div className={`${stat.bg} p-3 rounded-lg`}>
-              <stat.icon className={`h-6 w-6 ${stat.color}`} />
+            <div className={`${stat.bg} p-2.5 sm:p-3 rounded-lg`}>
+              <stat.icon className={`h-5 w-5 sm:h-6 sm:w-6 ${stat.color}`} />
             </div>
             <div>
-              <p className="text-sm font-medium text-gray-500">{stat.label}</p>
-              <p className="text-2xl font-bold text-gray-900">{stat.value}</p>
+              <p className="text-xs sm:text-sm font-medium text-gray-500">{stat.label}</p>
+              <p className="text-xl sm:text-2xl font-bold text-gray-900">{stat.value}</p>
             </div>
           </motion.div>
         ))}
@@ -63,7 +63,7 @@ export default function Dashboard() {
             </div>
             <div className="grid sm:grid-cols-2 gap-4">
               {recentQuizzes.map((quiz) => (
-                <div key={`quiz-${quiz.id}`} className="bg-white rounded-xl border border-gray-100 shadow-sm p-5 hover:border-indigo-200 hover:shadow-md transition-all cursor-pointer group">
+                <div key={`quiz-${quiz.id}`} className="bg-white rounded-xl border border-gray-100 shadow-sm p-4 sm:p-5 hover:border-indigo-200 hover:shadow-md transition-all cursor-pointer group">
                   <div className="flex items-center gap-3 mb-3">
                     <div className="bg-indigo-50 p-2 rounded-md text-indigo-600">
                       <BrainCircuit className="h-5 w-5" />
@@ -109,13 +109,13 @@ export default function Dashboard() {
           </section>
 
           {/* Quick Actions Panel */}
-          <section className="bg-gradient-to-br from-indigo-600 to-purple-700 rounded-2xl p-8 text-white shadow-lg relative overflow-hidden">
+          <section className="bg-gradient-to-br from-indigo-600 to-purple-700 rounded-2xl p-5 sm:p-8 text-white shadow-lg relative overflow-hidden">
             <div className="absolute top-0 right-0 p-12 opacity-10">
               <BrainCircuit className="w-48 h-48" />
             </div>
             <div className="relative z-10">
-              <h2 className="text-2xl font-bold mb-2">Need help studying?</h2>
-              <p className="text-indigo-100 mb-6 max-w-md">Our AI Tutor is ready to explain complex concepts, quiz you verbally, or help you organize your thoughts.</p>
+              <h2 className="text-xl sm:text-2xl font-bold mb-2">Need help studying?</h2>
+              <p className="text-sm sm:text-base text-indigo-100 mb-6 max-w-md">Our AI Tutor is ready to explain complex concepts, quiz you verbally, or help you organize your thoughts.</p>
               <Link href="/ai-tutor" className="inline-flex items-center justify-center rounded-lg text-sm font-semibold transition-colors bg-white text-indigo-600 hover:bg-indigo-50 h-10 px-6 shadow-sm">
                 Chat with AI Tutor
               </Link>
@@ -126,9 +126,9 @@ export default function Dashboard() {
 
         {/* Right Column: Activity Feed */}
         <div className="lg:col-span-1">
-          <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-6">
+          <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-4 sm:p-6">
             <div className="flex items-center justify-between mb-6">
-              <h2 className="text-lg font-bold text-gray-900 tracking-tight">Recent Activity</h2>
+              <h2 className="text-base sm:text-lg font-bold text-gray-900 tracking-tight">Recent Activity</h2>
             </div>
             <div className="space-y-6">
               {activities && activities.length > 0 ? activities.map((item, i) => (

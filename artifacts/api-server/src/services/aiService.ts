@@ -57,7 +57,7 @@ export async function* chat(
   }));
 
   const stream = await ai.models.generateContentStream({
-    model: "gemini-flash-latest",
+    model: "ge",
     contents,
     config: {
       systemInstruction: getTutorSystemPrompt(sessionSubject),

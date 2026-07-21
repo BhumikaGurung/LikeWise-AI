@@ -352,9 +352,9 @@ export default function AiTutor() {
   };
 
   return (
-    <div className="h-[calc(100vh-8rem)] flex gap-4">
+    <div className="h-[calc(100vh-8rem)] flex flex-col lg:flex-row gap-3 lg:gap-4">
       {/* Sidebar */}
-      <div className="w-80 flex flex-col bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden flex-shrink-0">
+      <div className="w-full lg:w-80 max-h-80 lg:max-h-none flex flex-col bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden flex-shrink-0">
         {/* Header */}
         <div className="p-4 border-b border-gray-100">
           <div className="flex items-center justify-between mb-3">
