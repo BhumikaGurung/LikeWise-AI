@@ -1,10 +1,14 @@
-# 🚀 LearnWise AI
-
 <div align="center">
 
-### **AI-Powered Learning Platform for Modern Students**
+<img src="assets/logo.png" alt="LearnWise AI Logo" width="180"/>
+
+# LearnWise AI
+
+### 🚀 AI-Powered Learning Platform for Modern Students
 
 Transform the way you study with AI-assisted learning. Upload PDFs, generate quizzes, create flashcards, build study plans, and learn smarter through an interactive AI-powered workspace.
+
+<br>
 
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.9-blue?logo=typescript)](https://www.typescriptlang.org/)
 [![React](https://img.shields.io/badge/React-19-61DAFB?logo=react)](https://react.dev/)
@@ -14,13 +18,13 @@ Transform the way you study with AI-assisted learning. Upload PDFs, generate qui
 [![Drizzle ORM](https://img.shields.io/badge/Drizzle-ORM-green)](https://orm.drizzle.team/)
 [![Clerk](https://img.shields.io/badge/Auth-Clerk-purple)](https://clerk.com/)
 [![Google Gemini](https://img.shields.io/badge/AI-Google%20Gemini-orange)](https://ai.google.dev/)
-[![License](https://img.shields.io/badge/License-MIT-success.svg)](LICENSE)
 
 ### 🌐 Live Demo
 
 **https://likewise-ai.onrender.com/**
 
 </div>
+
 
 ---
 
