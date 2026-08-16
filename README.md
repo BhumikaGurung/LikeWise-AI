@@ -4,7 +4,7 @@
 
 # LearnWise AI
 
-### 🚀 AI-Powered Learning Platform for Modern Students
+### AI-Powered Learning Platform for Modern Students
 
 Transform the way you study with AI-assisted learning. Upload PDFs, generate quizzes, create flashcards, build study plans, and learn smarter through an interactive AI-powered workspace.
 
@@ -19,7 +19,7 @@ Transform the way you study with AI-assisted learning. Upload PDFs, generate qui
 [![Clerk](https://img.shields.io/badge/Auth-Clerk-purple)](https://clerk.com/)
 [![Google Gemini](https://img.shields.io/badge/AI-Google%20Gemini-orange)](https://ai.google.dev/)
 
-### 🌐 Live Demo
+###  Live Demo
 
 **https://likewise-ai.onrender.com/**
 
@@ -28,7 +28,7 @@ Transform the way you study with AI-assisted learning. Upload PDFs, generate qui
 
 ---
 
-# 📖 Overview
+#  Overview
 
 LearnWise AI is an intelligent learning platform designed to help students study more efficiently using Artificial Intelligence.
 
@@ -38,24 +38,24 @@ The project follows a **contract-first architecture**, ensuring frontend and bac
 
 ---
 
-# ✨ Features
+#  Features
 
 | Feature | Status |
 |----------|--------|
-| 🤖 AI Tutor | 🚧 UI Ready |
-| 📄 PDF Learning | ✅ CRUD Ready |
-| 📝 AI Notes | 🚧 Planned |
-| 🎯 Quiz Generator | ✅ CRUD Ready |
-| 🎴 Flashcards | ✅ CRUD Ready |
-| 📅 Study Planner | ✅ CRUD Ready |
-| 📊 Progress Dashboard | ✅ Connected to Database |
-| 🔐 Authentication | ✅ Clerk |
-| 👤 User Profiles | ✅ |
-| 📈 Activity Feed | ✅ |
+|  AI Tutor |  UI Ready |
+|  PDF Learning | ✅ CRUD Ready |
+|  AI Notes |  To be  Planned |
+|  Quiz Generator | ✅ CRUD Ready |
+|  Flashcards | ✅ CRUD Ready |
+|  Study Planner | ✅ CRUD Ready |
+|  Progress Dashboard | ✅ Connected to Database |
+|  Authentication | ✅ Clerk |
+|  User Profiles | ✅ |
+|  Activity Feed | ✅ |
 
 ---
 
-# 🛠 Tech Stack
+#  Tech Stack
 
 ## Frontend
 
@@ -113,7 +113,7 @@ Planned
 
 ---
 
-# 🏗 Architecture
+#  Architecture
 
 ```text
                         OpenAPI Specification
@@ -134,7 +134,7 @@ Planned
 
 ---
 
-# 📁 Project Structure
+#  Project Structure
 
 ```text
 LearnWise-AI/
@@ -157,7 +157,7 @@ LearnWise-AI/
 
 ---
 
-# 🚀 Getting Started
+#  Getting Started
 
 ## Clone Repository
 
@@ -192,7 +192,7 @@ PORT=5173 BASE_PATH=/ pnpm --filter @workspace/learnwise-ai run dev
 
 ---
 
-# ⚙ Environment Variables
+#  Environment Variables
 
 Create a `.env` file.
 
@@ -210,7 +210,7 @@ VITE_CLERK_PUBLISHABLE_KEY=
 
 ---
 
-# 🔄 Development Workflow
+#  Development Workflow
 
 Generate API Client
 
@@ -238,7 +238,7 @@ pnpm --filter @workspace/db run push
 
 ---
 
-# 🧠 Architecture Principles
+#  Architecture Principles
 
 - Contract-first API Development
 - Shared OpenAPI Specification
@@ -249,7 +249,7 @@ pnpm --filter @workspace/db run push
 
 ---
 
-# 📌 Current Development Status
+# Current Development Status
 
 ### Completed
 
@@ -279,7 +279,7 @@ pnpm --filter @workspace/db run push
 
 ---
 
-# 📸 Screenshots
+#  Screenshots
 
 Add screenshots here:
 
@@ -293,7 +293,7 @@ Add screenshots here:
 
 ---
 
-# 🤝 Contributing
+#  Contributing
 
 Contributions are welcome.
 
@@ -321,27 +321,27 @@ git push origin feature/new-feature
 
 ---
 
-# 📜 License
+#  License
 
 Licensed under the **MIT License**.
 
 ---
 
-# 👨‍💻 Built With
+#  Built With
 
-- ❤️ React
-- ⚡ Vite
-- 🟦 TypeScript
-- 🗄 PostgreSQL
-- 🌿 Drizzle ORM
-- 🔐 Clerk
-- 🤖 Google Gemini (planned integration)
+-  React
+-  Vite
+-  TypeScript
+-  PostgreSQL
+-  Drizzle ORM
+-  Clerk
+-  Google Gemini (planned integration)
 
 ---
 
 <div align="center">
 
-### ⭐ If you found this project useful, consider giving it a star!
+###  If you found this project useful, consider giving it a star!
 
 **Made with ❤️ for students and lifelong learners.**
 
