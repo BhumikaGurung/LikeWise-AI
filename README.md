@@ -283,13 +283,32 @@ pnpm --filter @workspace/db run push
 
 Add screenshots here:
 
-- Landing Page
-- Dashboard
-- AI Tutor
-- Quiz Generator
-- Flashcards
-- PDF Learning
-- Study Planner
+- Landing Page :
+
+  <img width="1903" height="966" alt="image" src="https://github.com/user-attachments/assets/741fb6aa-4755-4f2d-89bb-635a198f6015" />
+
+- Dashboard :
+
+  <img width="1919" height="970" alt="image" src="https://github.com/user-attachments/assets/d001b284-3e8a-40ea-b376-b37c31ac4f63" />
+
+- AI Tutor :
+
+  <img width="1919" height="978" alt="image" src="https://github.com/user-attachments/assets/47183dde-896f-495d-b8c5-83c70c8ee63a" />
+
+- Quiz Generator :
+
+  <img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/c6fe599e-35f9-4b77-a2c8-13d5f5790583" />
+
+  <img width="1919" height="972" alt="image" src="https://github.com/user-attachments/assets/8a53364b-7d47-41ac-8915-f15855b098e4" />
+
+
+- Flashcards :
+
+  <img width="1919" height="971" alt="image" src="https://github.com/user-attachments/assets/890c8650-6eb1-4be9-b32a-e92de741bca2" />
+
+  <img width="1911" height="962" alt="image" src="https://github.com/user-attachments/assets/81bf59c0-2ff0-43af-8e53-42344cad5d81" />
+  
+  
 
 ---
 
