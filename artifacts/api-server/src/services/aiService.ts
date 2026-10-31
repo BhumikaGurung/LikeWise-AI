@@ -61,7 +61,7 @@ export async function* chat(
     contents,
     config: {
       systemInstruction: getTutorSystemPrompt(sessionSubject),
-      maxOutputTokens: 8192,
+      maxOutputTokens: 1024,
     },
   });
 
