@@ -98,7 +98,7 @@ export async function processPdfText(text: string): Promise<PdfAnalysisResult> {
   }
 
   const response = await ai.models.generateContent({
-    model: "gemini-flash-latest",
+    model: "gemini-3.5-flash",
     contents: [{ role: "user", parts: [{ text: getPdfAnalysisPrompt(trimmed) }] }],
     config: {
       responseMimeType: "application/json",
