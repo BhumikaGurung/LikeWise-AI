@@ -57,7 +57,7 @@ export async function* chat(
   }));
 
   const stream = await ai.models.generateContentStream({
-    model: "ge",
+    model: "gemini-3.5-flash-lite",
     contents,
     config: {
       systemInstruction: getTutorSystemPrompt(sessionSubject),
@@ -98,7 +98,7 @@ export async function processPdfText(text: string): Promise<PdfAnalysisResult> {
   }
 
   const response = await ai.models.generateContent({
-    model: "gemini-flash-latest",
+    model: "gemini-3.5-flash",
     contents: [{ role: "user", parts: [{ text: getPdfAnalysisPrompt(trimmed) }] }],
     config: {
       responseMimeType: "application/json",
@@ -139,6 +139,7 @@ export async function processPdfText(text: string): Promise<PdfAnalysisResult> {
 }
 
 /** Generates quiz questions. Returns stubbed data until a real provider is wired. */
+
 export async function generateQuizQuestions(
   subject: string,
   topic: string,
@@ -146,88 +147,153 @@ export async function generateQuizQuestions(
   questionType: QuizQuestionType,
   questionCount: number,
 ): Promise<QuizQuestion[]> {
-  // When a real AI is wired, replace everything below this comment:
-  // const systemPrompt = getQuizSystemPrompt();
-  // const userPrompt = getQuizUserPrompt(subject, topic, difficulty, questionType, questionCount);
-  // const text = await gemini.complete({ system: systemPrompt, prompt: userPrompt });
-  // return JSON.parse(text) as QuizQuestion[];
+  if (!ai) {
+    throw new Error("Gemini API key is missing. Check GEMINI_API_KEY in the backend environment.");
+  }
 
-  void getQuizSystemPrompt; // referenced so import isn't flagged unused after real wiring
-  void getQuizUserPrompt;
-  void getTutorSystemPrompt;
+  const systemPrompt = getQuizSystemPrompt();
 
-  return generateStubQuestions(subject, topic, difficulty, questionType, questionCount);
+  const userPrompt = getQuizUserPrompt(
+    subject,
+    topic,
+    difficulty,
+    questionType,
+    questionCount,
+  );
+
+  const prompt = `${userPrompt}
+
+IMPORTANT ADDITIONAL RULES:
+- Every question must test a different concept within the requested topic.
+- Do not repeat or rephrase questions.
+- Do not generate generic questions unrelated to the requested topic.
+- Use different examples, scenarios, and question styles.
+- Follow the requested question type and difficulty exactly.
+- Return exactly ${questionCount} questions.
+`;
+
+let response;
+
+for (let attempt = 1; attempt <= 3; attempt++) {
+  try {
+    response = await ai.models.generateContent({
+      model: "gemini-3.5-flash",
+      contents: prompt,
+      config: {
+        systemInstruction: systemPrompt,
+        responseMimeType: "application/json",
+        temperature: 0.9,
+      },
+    });
+
+    break;
+  } catch (error) {
+    const message =
+      error instanceof Error ? error.message : String(error);
+
+    const retryable = /503|429|500|502|504|UNAVAILABLE|RESOURCE_EXHAUSTED/i.test(
+      message,
+    );
+
+    if (!retryable || attempt === 3) {
+      throw new Error(`Quiz generation failed: ${message}`);
+    }
+
+    console.log(`Gemini attempt ${attempt} failed. Retrying...`);
+
+    await new Promise((resolve) =>
+      setTimeout(resolve, 1000 * 2 ** (attempt - 1)),
+    );
+  }
 }
 
-// ─── Stub generators ─────────────────────────────────────────────────────────
+if (!response) {
+  throw new Error("Gemini could not generate the quiz. Please try again.");
+}
 
-function generateStubQuestions(
-  subject: string,
-  topic: string,
-  difficulty: QuizDifficulty,
-  questionType: QuizQuestionType,
-  count: number,
-): QuizQuestion[] {
-  const templates = getStubTemplates(topic, questionType);
-  const questions: QuizQuestion[] = [];
+  const responseText = response.text;
 
-  for (let i = 0; i < count; i++) {
-    const t = templates[i % templates.length];
-    questions.push({
-      id: i + 1,
-      question: t.question.replace("{n}", String(i + 1)).replace("{topic}", topic),
+  if (!responseText) {
+    throw new Error("Gemini returned an empty quiz response.");
+  }
+
+  let parsed: unknown;
+
+  try {
+    parsed = JSON.parse(responseText);
+  } catch {
+    throw new Error("Gemini returned invalid JSON while generating the quiz.");
+  }
+
+  if (!Array.isArray(parsed)) {
+    throw new Error("Gemini did not return a valid array of quiz questions.");
+  }
+
+  const questions: QuizQuestion[] = parsed.map((item, index) => {
+    if (
+      !item ||
+      typeof item.question !== "string" ||
+      typeof item.correctAnswer !== "string" ||
+      typeof item.explanation !== "string" ||
+      !Array.isArray(item.options)
+    ) {
+      throw new Error(`Invalid quiz question received at position ${index + 1}.`);
+    }
+
+    const options = item.options;
+
+    if (!options.every((option: unknown) => typeof option === "string")) {
+      throw new Error(`Invalid options in question ${index + 1}.`);
+    }
+
+    if (
+      questionType === "mcq" &&
+      (options.length !== 4 || !options.includes(item.correctAnswer))
+    ) {
+      throw new Error(`Invalid MCQ options or answer in question ${index + 1}.`);
+    }
+
+    if (
+      questionType === "true_false" &&
+      (options.length !== 2 ||
+        !options.includes("True") ||
+        !options.includes("False") ||
+        !options.includes(item.correctAnswer))
+    ) {
+      throw new Error(`Invalid True/False question ${index + 1}.`);
+    }
+
+    if (
+      (questionType === "fill_blank" || questionType === "short_answer") &&
+      options.length !== 0
+    ) {
+      throw new Error(`Unexpected options in question ${index + 1}.`);
+    }
+
+    return {
+      id: index + 1,
+      question: item.question.trim(),
       type: questionType,
-      options: t.options,
-      correctAnswer: t.correctAnswer,
-      explanation: `${t.explanation} (${difficulty} level — ${subject})`,
-    });
+      options,
+      correctAnswer: item.correctAnswer.trim(),
+      explanation: item.explanation.trim(),
+    };
+  });
+
+  if (questions.length !== questionCount) {
+    throw new Error(
+      `Gemini generated ${questions.length} questions instead of ${questionCount}. Please try again.`,
+    );
+  }
+
+  // Prevent duplicate questions within the same quiz.
+  const uniqueQuestions = new Set(
+    questions.map((q) => q.question.toLowerCase().replace(/\s+/g, " ").trim()),
+  );
+
+  if (uniqueQuestions.size !== questions.length) {
+    throw new Error("Gemini generated duplicate questions. Please generate the quiz again.");
   }
 
   return questions;
-}
-
-function getStubTemplates(topic: string, type: QuizQuestionType) {
-  if (type === "true_false") {
-    return [
-      { question: `${topic} is a fundamental concept in computer science.`, options: ["True", "False"], correctAnswer: "True", explanation: `This is correct. ${topic} is widely studied and applied in computer science.` },
-      { question: `${topic} was invented after the year 2000.`, options: ["True", "False"], correctAnswer: "False", explanation: `${topic} has roots that predate the year 2000 by many decades.` },
-      { question: `Understanding ${topic} helps in writing efficient code.`, options: ["True", "False"], correctAnswer: "True", explanation: `Knowledge of ${topic} directly improves code quality and efficiency.` },
-      { question: `${topic} is only used in academic settings.`, options: ["True", "False"], correctAnswer: "False", explanation: `${topic} is widely used in real-world industry applications.` },
-      { question: `${topic} requires advanced mathematics to understand.`, options: ["True", "False"], correctAnswer: "False", explanation: `While math helps, ${topic} can be understood with basic logic and reasoning.` },
-    ];
-  }
-
-  if (type === "fill_blank") {
-    return [
-      { question: `In ${topic}, a ___ is the basic unit of data storage.`, options: [], correctAnswer: "node", explanation: `A node is the fundamental building block in ${topic} data structures.` },
-      { question: `The time complexity of ___ search is O(log n).`, options: [], correctAnswer: "binary", explanation: `Binary search halves the search space each step, giving O(log n) complexity.` },
-      { question: `___ is used to manage memory allocation in programs.`, options: [], correctAnswer: "heap", explanation: `The heap is the memory region used for dynamic memory allocation.` },
-      { question: `A ___ traversal visits nodes level by level.`, options: [], correctAnswer: "breadth-first", explanation: `Breadth-first traversal (BFS) processes nodes level by level using a queue.` },
-      { question: `${topic} uses ___ to ensure data integrity.`, options: [], correctAnswer: "constraints", explanation: `Constraints enforce rules that maintain data accuracy and consistency.` },
-    ];
-  }
-
-  if (type === "short_answer") {
-    return [
-      { question: `What is the main purpose of ${topic}?`, options: [], correctAnswer: `${topic} organises and manages information efficiently to solve computational problems.`, explanation: `Understanding the purpose of ${topic} is the foundation for using it effectively.` },
-      { question: `Name two real-world applications of ${topic}.`, options: [], correctAnswer: `Search engines and database indexing are common applications of ${topic}.`, explanation: `${topic} is used extensively in search and data management systems.` },
-      { question: `What is the time complexity of a linear search algorithm?`, options: [], correctAnswer: `O(n), where n is the number of elements in the collection.`, explanation: `Linear search checks each element one by one, so it scales linearly.` },
-      { question: `Explain the difference between stack and queue.`, options: [], correctAnswer: `A stack follows LIFO (Last In First Out) while a queue follows FIFO (First In First Out).`, explanation: `The order of insertion and removal is the key distinguishing factor.` },
-      { question: `What problem does ${topic} solve?`, options: [], correctAnswer: `${topic} solves the problem of efficiently organising, storing, and retrieving data.`, explanation: `Without such structures, data operations would be slow and error-prone.` },
-    ];
-  }
-
-  // Default: MCQ
-  return [
-    { question: `Which of the following best describes ${topic}?`, options: [`A method for organising and managing data`, `A type of programming language`, `An operating system component`, `A network protocol`], correctAnswer: `A method for organising and managing data`, explanation: `${topic} is primarily about organising and managing data efficiently.` },
-    { question: `What is the time complexity of binary search?`, options: [`O(n)`, `O(log n)`, `O(n²)`, `O(1)`], correctAnswer: `O(log n)`, explanation: `Binary search divides the search space in half each iteration, resulting in O(log n).` },
-    { question: `Which data structure uses LIFO order?`, options: [`Queue`, `Stack`, `Heap`, `Graph`], correctAnswer: `Stack`, explanation: `A Stack uses Last-In-First-Out (LIFO) ordering, where the last element added is the first removed.` },
-    { question: `In ${topic}, which operation has O(1) average complexity in a hash table?`, options: [`Search`, `Sort`, `Traverse`, `Merge`], correctAnswer: `Search`, explanation: `Hash tables use hashing to achieve constant-time O(1) average-case search operations.` },
-    { question: `What does DFS stand for in graph traversal?`, options: [`Data Flow Search`, `Depth-First Search`, `Direct File System`, `Dynamic Function Stack`], correctAnswer: `Depth-First Search`, explanation: `DFS (Depth-First Search) explores as far as possible down each branch before backtracking.` },
-    { question: `Which sorting algorithm has O(n log n) average time complexity?`, options: [`Bubble Sort`, `Insertion Sort`, `Merge Sort`, `Selection Sort`], correctAnswer: `Merge Sort`, explanation: `Merge Sort consistently achieves O(n log n) by dividing the array and merging sorted halves.` },
-    { question: `What is a linked list?`, options: [`A list stored in contiguous memory`, `A list where each node points to the next`, `A sorted array`, `A type of binary tree`], correctAnswer: `A list where each node points to the next`, explanation: `A linked list is a dynamic data structure where each node contains data and a pointer to the next node.` },
-    { question: `Which of these is NOT a tree traversal method?`, options: [`Inorder`, `Preorder`, `Postorder`, `Sideorder`], correctAnswer: `Sideorder`, explanation: `The standard tree traversal methods are Inorder, Preorder, and Postorder. "Sideorder" does not exist.` },
-    { question: `What is the worst-case time complexity of Quick Sort?`, options: [`O(n log n)`, `O(n)`, `O(n²)`, `O(log n)`], correctAnswer: `O(n²)`, explanation: `Quick Sort degrades to O(n²) when the pivot is always the smallest or largest element (poor pivot selection).` },
-    { question: `Which data structure is ideal for BFS traversal?`, options: [`Stack`, `Queue`, `Heap`, `Array`], correctAnswer: `Queue`, explanation: `BFS uses a Queue (FIFO) to process nodes level by level, ensuring breadth-first exploration.` },
-  ];
 }

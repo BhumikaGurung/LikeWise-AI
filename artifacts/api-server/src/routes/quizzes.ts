@@ -25,7 +25,7 @@ function toRow(q: typeof quizzesTable.$inferSelect) {
     subject: q.subject ?? "General",
     difficulty: (q.difficulty ?? "medium") as QuizDifficulty,
     questionType: (q.questionType ?? "mcq") as QuizQuestionType,
-    questions: (q.questions as QuizQuestion[] | null) ?? null,
+    questions: (q.questions as QuizQuestion[] | null) ?? [],
     score: q.score ?? null,
     totalCorrect: q.totalCorrect ?? null,
     totalWrong: q.totalWrong ?? null,
@@ -47,7 +47,19 @@ router.get("/quizzes", async (req, res): Promise<void> => {
     .orderBy(desc(quizzesTable.createdAt));
 
   const parsed = GetQuizzesResponse.safeParse(items.map(toRow));
-  if (!parsed.success) { res.status(500).json({ error: "Internal server error" }); return; }
+
+  if (!parsed.success) {
+  req.log.error(
+    { validationErrors: parsed.error.flatten() },
+    "Quiz response validation failed"
+  );
+
+  res.status(500).json({
+    error: "Quiz response validation failed",
+    details: parsed.error.flatten(),
+  });
+  return;
+}
   res.json(parsed.data);
 });
 
