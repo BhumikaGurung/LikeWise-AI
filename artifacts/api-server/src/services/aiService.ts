@@ -57,11 +57,11 @@ export async function* chat(
   }));
 
   const stream = await ai.models.generateContentStream({
-    model: "gemini-3.5-flash-lite",
+    model: "gemini-3.5-flash",
     contents,
     config: {
       systemInstruction: getTutorSystemPrompt(sessionSubject),
-      maxOutputTokens: 8192,
+      maxOutputTokens: 1024,
     },
   });
 

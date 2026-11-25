@@ -4,7 +4,7 @@
 
 # LearnWise AI
 
-### 🚀 AI-Powered Learning Platform for Modern Students
+### AI-Powered Learning Platform for Modern Students
 
 Transform the way you study with AI-assisted learning. Upload PDFs, generate quizzes, create flashcards, build study plans, and learn smarter through an interactive AI-powered workspace.
 
@@ -19,7 +19,7 @@ Transform the way you study with AI-assisted learning. Upload PDFs, generate qui
 [![Clerk](https://img.shields.io/badge/Auth-Clerk-purple)](https://clerk.com/)
 [![Google Gemini](https://img.shields.io/badge/AI-Google%20Gemini-orange)](https://ai.google.dev/)
 
-### 🌐 Live Demo
+###  Live Demo
 
 **https://likewise-ai.onrender.com/**
 
@@ -28,7 +28,7 @@ Transform the way you study with AI-assisted learning. Upload PDFs, generate qui
 
 ---
 
-# 📖 Overview
+#  Overview
 
 LearnWise AI is an intelligent learning platform designed to help students study more efficiently using Artificial Intelligence.
 
@@ -38,24 +38,24 @@ The project follows a **contract-first architecture**, ensuring frontend and bac
 
 ---
 
-# ✨ Features
+#  Features
 
 | Feature | Status |
 |----------|--------|
-| 🤖 AI Tutor | 🚧 UI Ready |
-| 📄 PDF Learning | ✅ CRUD Ready |
-| 📝 AI Notes | 🚧 Planned |
-| 🎯 Quiz Generator | ✅ CRUD Ready |
-| 🎴 Flashcards | ✅ CRUD Ready |
-| 📅 Study Planner | ✅ CRUD Ready |
-| 📊 Progress Dashboard | ✅ Connected to Database |
-| 🔐 Authentication | ✅ Clerk |
-| 👤 User Profiles | ✅ |
-| 📈 Activity Feed | ✅ |
+|  AI Tutor |  UI Ready |
+|  PDF Learning | ✅ CRUD Ready |
+|  AI Notes |  To be  Planned |
+|  Quiz Generator | ✅ CRUD Ready |
+|  Flashcards | ✅ CRUD Ready |
+|  Study Planner | ✅ CRUD Ready |
+|  Progress Dashboard | ✅ Connected to Database |
+|  Authentication | ✅ Clerk |
+|  User Profiles | ✅ |
+|  Activity Feed | ✅ |
 
 ---
 
-# 🛠 Tech Stack
+#  Tech Stack
 
 ## Frontend
 
@@ -113,7 +113,7 @@ Planned
 
 ---
 
-# 🏗 Architecture
+#  Architecture
 
 ```text
                         OpenAPI Specification
@@ -134,7 +134,7 @@ Planned
 
 ---
 
-# 📁 Project Structure
+#  Project Structure
 
 ```text
 LearnWise-AI/
@@ -157,7 +157,7 @@ LearnWise-AI/
 
 ---
 
-# 🚀 Getting Started
+#  Getting Started
 
 ## Clone Repository
 
@@ -192,7 +192,7 @@ PORT=5173 BASE_PATH=/ pnpm --filter @workspace/learnwise-ai run dev
 
 ---
 
-# ⚙ Environment Variables
+#  Environment Variables
 
 Create a `.env` file.
 
@@ -210,7 +210,7 @@ VITE_CLERK_PUBLISHABLE_KEY=
 
 ---
 
-# 🔄 Development Workflow
+#  Development Workflow
 
 Generate API Client
 
@@ -238,7 +238,7 @@ pnpm --filter @workspace/db run push
 
 ---
 
-# 🧠 Architecture Principles
+#  Architecture Principles
 
 - Contract-first API Development
 - Shared OpenAPI Specification
@@ -249,7 +249,7 @@ pnpm --filter @workspace/db run push
 
 ---
 
-# 📌 Current Development Status
+# Current Development Status
 
 ### Completed
 
@@ -279,21 +279,40 @@ pnpm --filter @workspace/db run push
 
 ---
 
-# 📸 Screenshots
+#  Screenshots
 
 Add screenshots here:
 
-- Landing Page
-- Dashboard
-- AI Tutor
-- Quiz Generator
-- Flashcards
-- PDF Learning
-- Study Planner
+- Landing Page :
+
+  <img width="1903" height="966" alt="image" src="https://github.com/user-attachments/assets/741fb6aa-4755-4f2d-89bb-635a198f6015" />
+
+- Dashboard :
+
+  <img width="1919" height="970" alt="image" src="https://github.com/user-attachments/assets/d001b284-3e8a-40ea-b376-b37c31ac4f63" />
+
+- AI Tutor :
+
+  <img width="1919" height="978" alt="image" src="https://github.com/user-attachments/assets/47183dde-896f-495d-b8c5-83c70c8ee63a" />
+
+- Quiz Generator :
+
+  <img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/c6fe599e-35f9-4b77-a2c8-13d5f5790583" />
+
+  <img width="1919" height="972" alt="image" src="https://github.com/user-attachments/assets/8a53364b-7d47-41ac-8915-f15855b098e4" />
+
+
+- Flashcards :
+
+  <img width="1919" height="971" alt="image" src="https://github.com/user-attachments/assets/890c8650-6eb1-4be9-b32a-e92de741bca2" />
+
+  <img width="1911" height="962" alt="image" src="https://github.com/user-attachments/assets/81bf59c0-2ff0-43af-8e53-42344cad5d81" />
+  
+  
 
 ---
 
-# 🤝 Contributing
+#  Contributing
 
 Contributions are welcome.
 
@@ -321,27 +340,27 @@ git push origin feature/new-feature
 
 ---
 
-# 📜 License
+#  License
 
 Licensed under the **MIT License**.
 
 ---
 
-# 👨‍💻 Built With
+#  Built With
 
-- ❤️ React
-- ⚡ Vite
-- 🟦 TypeScript
-- 🗄 PostgreSQL
-- 🌿 Drizzle ORM
-- 🔐 Clerk
-- 🤖 Google Gemini (planned integration)
+-  React
+-  Vite
+-  TypeScript
+-  PostgreSQL
+-  Drizzle ORM
+-  Clerk
+-  Google Gemini (planned integration)
 
 ---
 
 <div align="center">
 
-### ⭐ If you found this project useful, consider giving it a star!
+###  If you found this project useful, consider giving it a star!
 
 **Made with ❤️ for students and lifelong learners.**
 
